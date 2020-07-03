@@ -1,4 +1,4 @@
-# Lightstreamer Java In-Process Adapter API Specification
+# Lightstreamer Java In-Process Adapter SDK
  
 This project includes the source code of the Lightstreamer Java In-process Adapter API specification.
 This resource is needed to write Data Adapters and Metadata Adapters for Lightstreamer Server in Java. The adapters will run in process with the Lightstreamer Server.
