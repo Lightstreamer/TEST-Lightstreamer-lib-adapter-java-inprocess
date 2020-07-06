@@ -80,6 +80,7 @@ public interface SmartDataProvider extends DataProvider {
     public void subscribe(
         @Nonnull String itemName, @Nonnull Object itemHandle, boolean needsIterator)
             throws SubscriptionException, FailureException;
+    // Pertaining to DATA pool.
 
     /**
      * Inherited by the base interface DataProvider but never called in this
@@ -93,6 +94,7 @@ public interface SmartDataProvider extends DataProvider {
      */
     public void subscribe(@Nonnull String itemName, boolean needsIterator)
         throws SubscriptionException, FailureException;
+    // Pertaining to DATA pool.
 }
 
 

@@ -96,6 +96,7 @@ public interface MetadataProvider {
      */
     public void init(@Nonnull Map params, @Nonnull File configDir)
         throws MetadataProviderException;
+    // Pertaining to server startup.
     
     /**
      * Called by Lightstreamer Kernel to provide a listener to receive
@@ -108,6 +109,7 @@ public interface MetadataProvider {
      * @param listener a listener.
      */
     public default void setListener(@Nonnull MetadataControlListener listener) {
+        // Pertaining to server startup.
         // we will do without the listener
     }
 
@@ -158,6 +160,7 @@ public interface MetadataProvider {
      */
     public void notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders)
         throws AccessException, CreditsException;
+    // Pertaining to AUTHENTICATION pool.
 
     /**
      * Called by Lightstreamer Kernel, instead of calling the 3-arguments
@@ -198,6 +201,7 @@ public interface MetadataProvider {
      */
     public void notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders,  @Nonnull String clientPrincipal)
         throws AccessException, CreditsException;
+    // Pertaining to AUTHENTICATION pool.
 
     /**
      * Called by Lightstreamer Kernel to resolve an Item Group name (or Item List specification) supplied in
@@ -259,6 +263,7 @@ public interface MetadataProvider {
      */
     @Nonnull
     public String[] getItems(@Nullable String user, @Nonnull String sessionID, @Nonnull String group) throws ItemsException;
+    // Pertaining to DATA pool.
 
     /**
      * Called by Lightstreamer Kernel to resolve a Field Schema name (or Field List specification) supplied in
@@ -296,6 +301,7 @@ public interface MetadataProvider {
     @Nonnull
     public String[] getSchema(@Nullable String user, @Nonnull String sessionID, @Nonnull String group, @Nonnull String schema)
         throws ItemsException, SchemaException;
+    // Pertaining to DATA pool.
 
     /**
      * Called by Lightstreamer Kernel to ask for the bandwidth level to be
@@ -321,6 +327,7 @@ public interface MetadataProvider {
      */
     @Nonnull
     public double getAllowedMaxBandwidth(@Nullable String user);
+    // Pertaining to SET pool.
 
     /**
      * Called by Lightstreamer Kernel to ask for the ItemUpdate frequency
@@ -352,6 +359,7 @@ public interface MetadataProvider {
      */
     @Nonnull
     public double getAllowedMaxItemFrequency(@Nullable String user, @Nonnull String item);
+    // Pertaining to DATA pool.
 
     /**
      * Called by Lightstreamer Kernel to ask for the maximum size allowed
@@ -378,6 +386,7 @@ public interface MetadataProvider {
      * unlimited buffer.
      */
     public int getAllowedBufferSize(@Nullable String user, @Nonnull String item);
+    // Pertaining to DATA pool.
 
     /**
      * Called by Lightstreamer Kernel to ask for the allowance of a publishing
@@ -399,6 +408,7 @@ public interface MetadataProvider {
      * @return true if the publishing Mode is allowed.
      */
     public boolean isModeAllowed(@Nullable String user, @Nonnull String item, @Nonnull Mode mode);
+    // Pertaining to DATA pool.
 
     /**
      * Called by Lightstreamer Kernel to ask for the allowance of a publishing
@@ -420,6 +430,7 @@ public interface MetadataProvider {
      * @return true if the publishing Mode is allowed.
      */
     public boolean modeMayBeAllowed(@Nonnull String item, @Nonnull Mode mode);
+    // Pertaining to DATA pool.
 
     /**
      * Called by Lightstreamer Kernel to ask for the allowance of a Selector
@@ -436,6 +447,7 @@ public interface MetadataProvider {
      * @return true if the Selector is allowed.
      */
     public boolean isSelectorAllowed(@Nullable String user, @Nonnull String item, @Nonnull String selector);
+    // Pertaining to DATA pool.
 
     /**
      * Called by Lightstreamer Kernel in order to filter events pertaining
@@ -469,6 +481,7 @@ public interface MetadataProvider {
      * @return true if the event is to be processed by the ItemEventBuffer.
      */
     public boolean isSelected(@Nullable String user, @Nonnull String item, @Nonnull String selector, @Nonnull ItemEvent event);
+    // No specific pertaining pool.
 
     /**
      * Called by Lightstreamer Kernel to know whether the Metadata Adapter
@@ -488,6 +501,7 @@ public interface MetadataProvider {
      * an update for the Item is received in a Session owned by the User.
      */
     public boolean enableUpdateCustomization(@Nullable String user, @Nonnull String item);
+    // Pertaining to DATA pool.
     
     /**
      * Called by Lightstreamer Kernel in order to customize events pertaining
@@ -523,6 +537,7 @@ public interface MetadataProvider {
      * @param event An update event for the Item, ready to be changed.
      */
     public void customizeUpdate(@Nullable String user, @Nonnull String item, @Nonnull CustomizableItemEvent event);
+    // No specific pertaining pool.
 
     /**
      * Called by Lightstreamer Kernel to ask for the minimum ItemEvent
@@ -562,6 +577,7 @@ public interface MetadataProvider {
      */
     @Nonnull
     public double getMinSourceFrequency(@Nonnull String item);
+    // Pertaining to DATA pool.
 
     /**
      * Called by Lightstreamer Kernel to ask for the maximum allowed length
@@ -581,6 +597,7 @@ public interface MetadataProvider {
      * value means that no Snapshot information should be kept.
      */
     public int getDistinctSnapshotLength(@Nonnull String item);
+    // Pertaining to DATA pool.
 
     /**
      * Called by Lightstreamer Kernel to forward a message received by a User.
@@ -604,6 +621,7 @@ public interface MetadataProvider {
      */
     public void notifyUserMessage(@Nullable String user, @Nonnull String sessionID, @Nonnull String message)
         throws CreditsException, NotificationException;
+    // Pertaining to MSG pool.
 
     /**
      * Called by Lightstreamer Kernel to check that a User is enabled to open
@@ -671,6 +689,7 @@ public interface MetadataProvider {
      */
     public void notifyNewSession(@Nullable String user, @Nonnull String sessionID,  @Nonnull Map clientContext)
         throws CreditsException, NotificationException;
+    // Pertaining to SET pool.
 
     /**
      * Called by Lightstreamer Kernel to ask for an optional time-to-live setting
@@ -696,6 +715,7 @@ public interface MetadataProvider {
      * limit will be applied.
      */
     public default int getSessionTimeToLive(@Nullable String user, @Nonnull String session) {
+        // Pertaining to SET pool.
         return 0;
     }
 
@@ -719,6 +739,7 @@ public interface MetadataProvider {
      * such as the ID of a Session that is not currently open.
      */
     public void notifySessionClose(@Nonnull String sessionID) throws NotificationException;
+    // No specific pertaining pool.
 
     /**
      * Called by Lightstreamer Kernel to know whether the Metadata Adapter
@@ -737,6 +758,7 @@ public interface MetadataProvider {
      * (i&#46;e&#46;: Subscription) is added or removed from a Session owned by the User.
      */
     public boolean wantsTablesNotification(@Nullable String user);
+    // Pertaining to SET pool.
 
     /**
      * Called by Lightstreamer Kernel to check that a User is enabled to add
@@ -769,6 +791,7 @@ public interface MetadataProvider {
      */
     public void notifyNewTables(@Nullable String user, @Nonnull String sessionID, @Nonnull TableInfo[] tables)
         throws CreditsException, NotificationException;
+    // Pertaining to DATA pool.
 
     /**
      * Called by Lightstreamer Kernel to notify the Metadata Adapter that
@@ -793,6 +816,7 @@ public interface MetadataProvider {
      */
     public void notifyTablesClose(@Nonnull String sessionID, @Nonnull TableInfo[] tables)
         throws NotificationException;
+    // No specific pertaining pool.
     
     /**
      * Called by Lightstreamer Kernel to check that a User is enabled to access
@@ -831,6 +855,7 @@ public interface MetadataProvider {
      */
     public void notifyMpnDeviceAccess(@Nullable String user, @Nonnull String sessionID, @Nonnull MpnDeviceInfo device)
             throws CreditsException, NotificationException;
+    // Pertaining to DATA pool.
 
     /**
      * Called by Lightstreamer Kernel to check that a User is enabled 
@@ -874,6 +899,7 @@ public interface MetadataProvider {
      */
     public void notifyMpnSubscriptionActivation(@Nullable String user, @Nonnull String sessionID, @Nonnull TableInfo table, @Nonnull MpnSubscriptionInfo mpnSubscription)
             throws CreditsException, NotificationException;
+    // Pertaining to DATA pool.
     
     /**
      * Called by Lightstreamer Kernel to check that a User is enabled to change
@@ -906,6 +932,7 @@ public interface MetadataProvider {
      */
     public void notifyMpnDeviceTokenChange(@Nullable String user, @Nonnull String sessionID, @Nonnull MpnDeviceInfo device, @Nonnull String newDeviceToken)
             throws CreditsException, NotificationException;
+    // Pertaining to DATA pool.
 }
 
 

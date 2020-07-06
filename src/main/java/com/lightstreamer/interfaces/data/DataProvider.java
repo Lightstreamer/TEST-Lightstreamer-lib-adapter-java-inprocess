@@ -101,6 +101,7 @@ public interface DataProvider {
      */
     public void init(@Nonnull Map params, @Nonnull File configDir)
         throws DataProviderException;
+    // Pertaining to server startup.
 
     /**
      * Called by Lightstreamer Kernel to provide a listener to receive the
@@ -110,6 +111,7 @@ public interface DataProvider {
      * @param listener a listener.
      */
     public void setListener(@Nonnull  ItemEventListener listener);
+    // Pertaining to server startup.
 
     /**
      * Called by Lightstreamer Kernel to request data for an Item. If the
@@ -171,6 +173,7 @@ public interface DataProvider {
      */
     public void subscribe(@Nonnull String itemName, boolean needsIterator)
         throws SubscriptionException, FailureException;
+    // Pertaining to DATA pool.
 
     /**
      * Called by Lightstreamer Kernel to end a previous request of data for
@@ -195,6 +198,7 @@ public interface DataProvider {
      */
     public void unsubscribe(@Nonnull String itemName)
         throws SubscriptionException, FailureException;
+    // Pertaining to DATA pool.
 
     /**
      * Called by Lightstreamer Kernel to know whether the Data Adapter,
@@ -224,6 +228,8 @@ public interface DataProvider {
      */
     public boolean isSnapshotAvailable(@Nonnull String itemName)
         throws SubscriptionException;
+    // Pertaining to DATA pool.
+
     /**
      * Constant that can be used as field name for the "key" field in Items
      * to be processed in COMMAND mode.
