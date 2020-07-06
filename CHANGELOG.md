@@ -2,9 +2,9 @@
 
 ## [7.2.0] (24-01-2020)
 
-*Compatible with Lightstreamer Server since 7.1.*
-*Compatible with code developed with the previous version.*
-*Compatible with configuration files for the previous version.*
+*Compatible with Lightstreamer Server since 7.1.*  
+*Compatible with code developed with the previous version.*  
+*Compatible with configuration files for the previous version.*  
 *Compatible with the deployment structure of the previous version.*
 
 **New Features**
@@ -33,9 +33,9 @@ This will allow the Adapter to specify a time-to-live for the session, which wil
 
 ## [7.0.1] (28-02-2018)
 
-*Compatible with Lightstreamer Server since 7.0.*
-*Compatible with code developed with the previous version.*
-*Compatible with configuration files for the previous version.*
+*Compatible with Lightstreamer Server since 7.0.*  
+*Compatible with code developed with the previous version.*  
+*Compatible with configuration files for the previous version.*  
 *Compatible with the deployment structure of the previous version.*
 
 **Improvements**
@@ -44,9 +44,9 @@ This will allow the Adapter to specify a time-to-live for the session, which wil
 
 ## [7.0.0] (20-12-2017)
 
-*Compatible with Lightstreamer Server since 7.0 b2.*
-*May not be compatible with code developed with the previous version; see the compatibility notes below.*
-*May not be compatible with configuration files for the previous version; see the compatibility notes below.*
+*Compatible with Lightstreamer Server since 7.0 b2.*  
+*May not be compatible with code developed with the previous version; see the compatibility notes below.*  
+*May not be compatible with configuration files for the previous version; see the compatibility notes below.*  
 *Compatible with the deployment structure of the previous version.*
 
 **New Features**
@@ -78,8 +78,8 @@ This will allow the Adapter to specify a time-to-live for the session, which wil
 
 ## [6.0.1] (23-01-2017)
 
-*Compatible with Lightstreamer Server since 6.0.3.*
-*Compatible with code developed with the previous version.*
+*Compatible with Lightstreamer Server since 6.0.3.*  
+*Compatible with code developed with the previous version.*  
 *Compatible with the deployment structure of the previous version.*
 
 **Improvements**
@@ -90,8 +90,8 @@ This will allow the Adapter to specify a time-to-live for the session, which wil
 
 ## [6.0.0] (21-01-2015)
 
-*Compatible with Lightstreamer Server since 6.0.*
-*May not be compatible with code developed with the previous version; see the compatibility notes below.*
+*Compatible with Lightstreamer Server since 6.0.*  
+*May not be compatible with code developed with the previous version; see the compatibility notes below.*  
 *May not be compatible with the deployment structure of the previous version; see the compatibility notes below.*
 
 **New Features**
@@ -154,8 +154,8 @@ Clarified the docs with regard to the thread pools involved in the various adapt
 
 ## [5.1.0] (20-12-2012)
 
-*Compatible with Lightstreamer Server since 5.1.*
-*Compatible with code developed with the previous version.*
+*Compatible with Lightstreamer Server since 5.1.*  
+*Compatible with code developed with the previous version.*  
 *Compatible with the deployment structure of the previous version.*
 
 **New Features**
