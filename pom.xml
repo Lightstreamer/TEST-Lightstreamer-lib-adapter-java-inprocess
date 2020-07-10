@@ -9,9 +9,10 @@
   <packaging>jar</packaging>
   <version>7.3.0</version>
   
-  <name>Lightstreamer In-Process Java Adapter API Specification</name>
+  <name>Lightstreamer Java In-Process Adapter API</name>
   <description>
-	This project includes the resources needed to write Data Adapters and Metadata Adapters for Lightstreamer Server in Java.
+    This project includes the source code of the Lightstreamer Java In-Process Adapter API.
+	This resource is needed to develop Data Adapters and Metadata Adapters for Lightstreamer Server in Java.
   </description>
   <url>https://github.com/Lightstreamer/Lightstreamer-lib-adapter-java-inprocess</url>
   

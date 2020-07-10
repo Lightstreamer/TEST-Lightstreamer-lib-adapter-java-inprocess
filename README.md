@@ -13,7 +13,7 @@ In case you want to use Eclipse for developing and running your own Adapter Set,
 
 ## Compatibility
 
-The library is compatible with Compatible with Lightstreamer Server since 7.1.
+The library is compatible with Lightstreamer Server since 7.1.
 
 ## Using the API
 
