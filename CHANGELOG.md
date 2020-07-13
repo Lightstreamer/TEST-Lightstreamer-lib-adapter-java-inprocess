@@ -1,5 +1,27 @@
 # Lightstreamer Changelog - SDK for Java In-Process Adapters
 
+## [7.3.0] (10-07-2020)
+
+*Compatible with Lightstreamer Server since 7.1.*  
+*May not be compatible with code developed with the previous version; see compatibility notes below.*  
+*Compatible with configuration files for the previous version.*  
+*Compatible with the deployment structure of the previous version.*
+
+**New Features**
+
+- Made the library available on the public Maven repository, at the following address:<br/>
+https://mvnrepository.com/artifact/com.lightstreamer/ls-adapter-inprocess<br/>
+Previous releases were included in Lightstreamer distribution packages, up to Lightstreamer version 7.1.1.
+
+- Made the library open source and available on GitHub at the following address:<br/>
+https://github.com/Lightstreamer/Lightstreamer-lib-adapter-java-inprocess
+
+**Improvements**
+   
+- Added the null annotations (according to JSR 305) in the class files of public classes, to better support library use with Kotlin and any other language which leverages JSR 305.<br/>
+**COMPATIBILITY NOTE:** *Existing code written in Kotlin and similar languages may no longer compile and should be aligned with the new method signatures. No issues are expected for existing Java code.*
+
+
 ## [7.2.0] (24-01-2020)
 
 *Compatible with Lightstreamer Server since 7.1.*  

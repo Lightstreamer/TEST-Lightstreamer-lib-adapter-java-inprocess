@@ -29,7 +29,7 @@ Since the API is available from the Maven Central Repository, to setup your deve
 
 ## External Links
 
-- Maven repository (coming soon)
+- [Maven repository](https://mvnrepository.com/artifact/com.lightstreamer/ls-adapter-inprocess)
 
 - [Examples](https://demos.lightstreamer.com/?p=lightstreamer&t=adapter&a=javaadapter)
 
