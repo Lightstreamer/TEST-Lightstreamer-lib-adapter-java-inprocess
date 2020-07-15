@@ -33,7 +33,7 @@ Since the API is available from the Maven Central Repository, to setup your deve
 
 - [Examples](https://demos.lightstreamer.com/?p=lightstreamer&t=adapter&a=javaadapter)
 
-- [API Reference](https://lightstreamer.com/api/ls-java-inprocess-adapter/latest/)
+- [API Reference](https://sdk.lightstreamer.com/ls-adapter-inprocess/7.3.0/api/index.html)
 
 ## Other GitHub projects using this library
 
