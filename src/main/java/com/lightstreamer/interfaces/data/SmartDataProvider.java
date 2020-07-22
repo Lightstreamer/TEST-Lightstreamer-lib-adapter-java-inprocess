@@ -28,12 +28,14 @@ import javax.annotation.Nullable;
  * to item data in the Kernel. These handles can be used, instead of item
  * names, to identify items in update calls, through the various smartUpdate
  * and the smartEndOfSnapshot methods.
- * <BR>Using this extended interface is natural in many situations, where an
- * internal lookup for item data by item name is already performed in the
- * Data Adapter. In these cases, a second lookup in the Kernel can be saved.
- * This also saves a global synchronization, allowing different update calls
- * issued in different threads to be managed concurrently, provided that calls
- * for the same item are issued in the same thread. 
+ * <BR>Using this extended interface may be natural, depending on the Data
+ * Adapter implementation. In fact, when an update is available, a reference
+ * to the related subscription information may be already in the context;
+ * or an internal lookup for the related subscription information by item name
+ * is already needed. In these cases, a second global lookup in the Kernel
+ * can be saved. As a consequence, different smartUpdate/smartEndOfSnapshot
+ * calls issued on different threads can be fully decoupled, provided that
+ * calls for the same item are issued in the same thread. 
  * <BR>Lightstreamer Kernel always uses different handles across subsequent
  * subscriptions of the same item. This gives an additional benefit: if
  * spurious trailing updates are sent, through smartUpdate, after an item has
