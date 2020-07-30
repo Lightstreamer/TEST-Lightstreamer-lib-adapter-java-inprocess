@@ -3,7 +3,7 @@
 This project includes the source code of the Lightstreamer Java In-process Adapter API specification.
 This resource is needed to write Data Adapters and Metadata Adapters for Lightstreamer Server in Java. The adapters will run in process with the Lightstreamer Server.
 Each Lightstreamer session requires the presence of an Adapter Set, which is made up of one Metadata Adapter and one or multiple Data Adapters. Multiple Adapter Sets can be plugged onto Lightstreamer Server.
-Please refer to [General Concepts](https://www.lightstreamer.com/docs/base/General%20Concepts.pdf) document for further details about the role of the Adapters in Lightstreamer.
+Please refer to [General Concepts](https://lightstreamer.com/docs/ls-server/latest/General%20Concepts.pdf) document for further details about the role of the Adapters in Lightstreamer.
 
 Each Adapter Set is defined by a configuration file called `adapters.xml` placed in a specific subfolder of `/adapters`. Please refer to the WELCOME Adapter Set pre-installed in the factory donwload of Lightstreamer as a reference of Adapters deploy and to [adapters.xml](adapters.xml) for a complete description of all the parameters configurable for an Adapter Set.
 
