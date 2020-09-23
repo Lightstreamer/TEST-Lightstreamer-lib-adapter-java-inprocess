@@ -325,7 +325,6 @@ public interface MetadataProvider {
      * @return The allowed bandwidth, in Kbit/sec. A zero return value means
      * an unlimited bandwidth.
      */
-    @Nonnull
     public double getAllowedMaxBandwidth(@Nullable String user);
     // Pertaining to SET pool.
 
@@ -357,7 +356,6 @@ public interface MetadataProvider {
      * @return The allowed Update frequency, in Updates/sec. A zero return
      * value means no frequency restriction.
      */
-    @Nonnull
     public double getAllowedMaxItemFrequency(@Nullable String user, @Nonnull String item);
     // Pertaining to DATA pool.
 
@@ -575,7 +573,6 @@ public interface MetadataProvider {
      * frequency for the Item is known to be very low, returning zero allows
      * Lightstreamer Kernel to save any prefiltering effort.
      */
-    @Nonnull
     public double getMinSourceFrequency(@Nonnull String item);
     // Pertaining to DATA pool.
 

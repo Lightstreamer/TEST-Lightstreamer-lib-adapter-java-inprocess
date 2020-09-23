@@ -127,7 +127,6 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * @param  user  not used.
      * @return always zero, to mean no bandwidth limit.
      */
-    @Nonnull
     public double getAllowedMaxBandwidth(@Nullable String user) {
         return 0.0;
     }
@@ -143,7 +142,6 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * @param  item  not used.
      * @return always zero, to mean no frequency limit.
      */
-    @Nonnull
     public double getAllowedMaxItemFrequency(@Nullable String user, @Nonnull String item) {
         return 0.0;
     }
@@ -280,7 +278,6 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * @return always zero, to mean that incoming ItemEvents must not be
      * prefiltered.
      */
-    @Nonnull
     public double getMinSourceFrequency(@Nonnull String item) {
         return 0.0;
     }

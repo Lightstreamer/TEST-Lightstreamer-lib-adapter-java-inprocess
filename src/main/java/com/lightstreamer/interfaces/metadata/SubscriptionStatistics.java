@@ -39,7 +39,7 @@ public final class SubscriptionStatistics {
      * @param totFiltered the number of updates that were not sent to the
      * client, but filtered out according to the filtering rules.
      */
-    public SubscriptionStatistics(@Nonnull long totRealTime, @Nonnull long totLost, @Nonnull long totFiltered) {
+    public SubscriptionStatistics(long totRealTime, long totLost, long totFiltered) {
         this.totRealTime = totRealTime;
         this.totLost = totLost;
         this.totFiltered = totFiltered;
@@ -52,7 +52,6 @@ public final class SubscriptionStatistics {
      * 
      * @return The number of updates sent.
      */
-    @Nonnull
     public long getTotRealTime() {
         return totRealTime;
     }
@@ -70,7 +69,6 @@ public final class SubscriptionStatistics {
      * 
      * @return The number of updates lost.
      */
-    @Nonnull
     public long getTotLost() {
         return totLost;
     }
@@ -88,7 +86,6 @@ public final class SubscriptionStatistics {
      * 
      * @return The number of updates filtered out.
      */
-    @Nonnull
     public long getTotFiltered() {
         return totFiltered;
     }
