@@ -28,12 +28,6 @@ import javax.annotation.Nullable;
  * is also supplied.
  * <BR>After receiving this exception, the Server may try to close the specified
  * session and invoke {@link MetadataProvider#notifyNewSession(String, String, Map)} again.
- *
- * @author              Dario Crivelli
- * last author:         $Author: Aalinone $
- * @version             $Revision: 31501 $
- * last modified:       $Modtime: 17/01/07 16.14 $
- * last check-in:       $Date: 17/01/07 16.15 $
  */
 public class ConflictingSessionException extends CreditsException {
     private String conflictingSessionID;

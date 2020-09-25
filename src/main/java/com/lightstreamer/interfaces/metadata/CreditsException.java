@@ -25,12 +25,6 @@ import javax.annotation.Nullable;
  * Different kinds of problems can be distinguished by an error code. Both
  * the error message detail and the error code will be forwarded by
  * Lightstreamer Kernel to the Client.
- *
- * @author              Dario Crivelli
- * last author:         $Author: Aalinone $
- * @version             $Revision: 24554 $
- * last modified:       $Modtime: 17/01/07 16.14 $
- * last check-in:       $Date: 17/01/07 16.15 $
  */
 public class CreditsException extends Exception {
     private int clientErrorCode;

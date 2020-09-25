@@ -22,12 +22,6 @@ import javax.annotation.Nullable;
  * inconsistency in the supplied parameters.
  * Lightstreamer Kernel ensures that such conditions will never occur,
  * but they may be checked for debugging or documentation reasons.
- *
- * @author              Dario Crivelli
- * last author:         $Author: Aalinone $
- * @version             $Revision: 17783 $
- * last modified:       $Modtime: 17/01/07 16.14 $
- * last check-in:       $Date: 17/01/07 16.15 $
  */
 public class NotificationException extends Exception {
 

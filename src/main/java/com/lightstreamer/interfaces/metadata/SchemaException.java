@@ -20,12 +20,6 @@ import javax.annotation.Nullable;
 /**
  * Thrown by the getSchema method in MetadataProvider if the supplied
  * Field Schema name (or Field List specification) is not recognized or cannot be resolved.
- *
- * @author              Dario Crivelli
- * last author:         $Author: Aalinone $
- * @version             $Revision: 32346 $
- * last modified:       $Modtime: 17/01/07 16.14 $
- * last check-in:       $Date: 17/01/07 16.15 $
  */
 public class SchemaException extends Exception {
 

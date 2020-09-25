@@ -61,12 +61,6 @@ import java.util.Map;
  * the same Item will be interleaved, without redundant calls; whenever
  * subscribe throws an exception, the corresponding unsubscribe call is not
  * issued.
- *
- * @author              Dario Crivelli
- * last author:         $Author: Dcrivel $
- * @version             $Revision: 57565 $
- * last modified:       $Modtime: 15/06/07 11.49 $
- * last check-in:       $Date: 15/06/07 11.58 $
  */
 public interface DataProvider {
 

@@ -28,12 +28,6 @@ import javax.annotation.Nullable;
  * The fields can be changed by supplying a new value, either as a String
  * or as a byte array. New fields can be added to the event as well.
  * Fields can also be removed, by setting them to null.
- *
- * @author          ...
- * last author:     $Author: Aalinone $
- * @version         $Revision: 67058 $
- * last modified:   $Modtime: 17/01/07 16.14 $
- * last check-in:   $Date: 17/01/07 16.15 $
  */
 public interface CustomizableItemEvent extends ItemEvent {
 

@@ -25,12 +25,6 @@ import javax.annotation.Nullable;
  * in order to be processed by an ItemEventBuffer.
  * All the fields pertaining to the updated Item state are reported,
  * regardless that they are changing or confirmed with the event.
- *
- * @author          ...
- * last author:     $Author: Aalinone $
- * @version         $Revision: 53184 $
- * last modified:   $Modtime: 17/01/07 16.14 $
- * last check-in:   $Date: 17/01/07 16.15 $
  */
 public interface ItemEvent {
 

@@ -21,11 +21,6 @@ import javax.annotation.Nullable;
  * Thrown by the subscribe and unsubscribe methods in DataProvider if the
  * request cannot be satisfied.
  *
- * @author              Dario Crivelli
- * last author:         $Author: Aalinone $
- * @version             $Revision: 17783 $
- * last modified:       $Modtime: 17/01/07 16.14 $
- * last check-in:       $Date: 17/01/07 16.15 $
  * @see DataProvider
  */
 public class SubscriptionException extends Exception {

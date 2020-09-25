@@ -21,12 +21,7 @@ import javax.annotation.Nullable;
  * Thrown by the subscribe and unsubscribe methods in DataProvider if the
  * method execution has caused a severe problem that can compromise future
  * operation of the Data Adapter.
- *
- * @author              Dario Crivelli
- * last author:         $Author: Aalinone $
- * @version             $Revision: 19285 $
- * last modified:       $Modtime: 17/01/07 16.14 $
- * last check-in:       $Date: 17/01/07 16.15 $
+ * 
  * @see DataProvider
  */
 public class FailureException extends Exception {

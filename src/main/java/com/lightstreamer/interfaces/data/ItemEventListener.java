@@ -57,11 +57,6 @@ import java.util.Map;
  * from the external feed (like JMS Messages), all the above has to be
  * carefully considered.
  *
- * @author              Dario Crivelli
- * last author:         $Author: Dcrivel $
- * @version             $Revision: 53184 $
- * last modified:       $Modtime: 14/01/08 15.13 $
- * last check-in:       $Date: 14/01/08 15.15 $
  * @see DataProvider
  */
 public interface ItemEventListener {

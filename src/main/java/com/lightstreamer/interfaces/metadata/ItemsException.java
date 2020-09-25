@@ -20,12 +20,6 @@ import javax.annotation.Nullable;
 /**
  * Thrown by the getItems and getSchema methods in MetadataProvider if the
  * supplied Item Group name (or Item List specification) is not recognized or cannot be resolved.
- *
- * @author              Dario Crivelli
- * last author:         $Author: Aalinone $
- * @version             $Revision: 32346 $
- * last modified:       $Modtime: 17/01/07 16.14 $
- * last check-in:       $Date: 17/01/07 16.15 $
  */
 public class ItemsException extends Exception {
 

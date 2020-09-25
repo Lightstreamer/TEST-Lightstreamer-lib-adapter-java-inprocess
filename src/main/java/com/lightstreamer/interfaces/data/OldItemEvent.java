@@ -33,12 +33,6 @@ import java.util.Enumeration;
  * construction. If the implementation were slow, the whole update delivery
  * process, even for different sessions, would be slowed down.
  *
- * @author          ...
- * last author:     $Author: Aalinone $
- * @version         $Revision: 53184 $
- * last modified:   $Modtime: 17/01/07 16.14 $
- * last check-in:   $Date: 17/01/07 16.15 $
- *
  * @see ItemEventListener
  * @see ItemEvent
  */

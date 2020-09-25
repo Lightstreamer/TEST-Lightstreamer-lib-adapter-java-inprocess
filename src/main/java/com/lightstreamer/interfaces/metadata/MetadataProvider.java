@@ -58,12 +58,6 @@ import javax.annotation.Nullable;
  * characteristics of an item are the same regardless of the Data Adapter
  * it is requested from. More likely, for each item name defined, only one
  * of the Data Adapters in the set is responsible for supplying that item.
- *
- * @author              Dario Crivelli
- * last author:         $Author: Dcrivel $
- * @version             $Revision: 75867 $
- * last modified:       $Modtime: 8/02/08 10.20 $
- * last check-in:       $Date: 8/02/08 10.22 $
  */
 public interface MetadataProvider {
 	

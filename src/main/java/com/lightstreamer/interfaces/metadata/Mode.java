@@ -22,12 +22,6 @@ import javax.annotation.Nonnull;
  * Lightstreamer Kernel can be uniquely identified by the static constants
  * defined in this class.
  * See the technical documents for a detailed description of Modes.
- *
- * @author              Dario Crivelli
- * last author:         $Author: Aalinone $
- * @version             $Revision: 40022 $
- * last modified:       $Modtime: 17/01/07 16.14 $
- * last check-in:       $Date: 17/01/07 16.15 $
  */
 public class Mode {
 

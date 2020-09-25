@@ -20,12 +20,6 @@ import javax.annotation.Nullable;
 /**
  * Thrown by the notify* methods in MetadataProvider if the supplied User
  * is not recognized or a functionality is not implemented for this User.
- *
- * @author              Dario Crivelli
- * last author:         $Author: Aalinone $
- * @version             $Revision: 17783 $
- * last modified:       $Modtime: 17/01/07 16.14 $
- * last check-in:       $Date: 17/01/07 16.15 $
  */
 public class AccessException extends Exception {
 

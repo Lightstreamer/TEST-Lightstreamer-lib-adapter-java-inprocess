@@ -28,12 +28,6 @@ import javax.annotation.Nullable;
  * to a Session have to be written to a TableInfo instance.
  * The object also provides useful queries and operations that can be performed
  * on its specific Table (i&#46;e&#46;: Subscription).
- *
- * @author              Dario Crivelli
- * last author:         $Author: Aalinone $
- * @version             $Revision: 75675 $
- * last modified:       $Modtime: 17/01/07 16.14 $
- * last check-in:       $Date: 17/01/07 16.15 $
  */
 public class TableInfo {
     private final int winIndex;

@@ -23,12 +23,6 @@ import javax.annotation.Nullable;
  * cannot be validated because of a temporary lack of resources
  * <BR>When receiving this exception, the Server will instruct the client
  * to retry in short time.
- *
- * @author              Dario Crivelli
- * last author:         $Author: Aalinone $
- * @version             $Revision: 31501 $
- * last modified:       $Modtime: 17/01/07 16.14 $
- * last check-in:       $Date: 17/01/07 16.15 $
  */
 public class ResourceUnavailableException extends AccessException {
 

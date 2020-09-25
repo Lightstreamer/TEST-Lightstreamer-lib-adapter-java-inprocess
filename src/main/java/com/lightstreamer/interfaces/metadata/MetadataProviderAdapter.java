@@ -25,12 +25,6 @@ import javax.annotation.Nullable;
  * Provides a default implementation of all the MetadataProvider interface
  * methods. Overriding this class may facilitate the coding of simple 
  * Metadata Adapters.
- *
- * @author              Dario Crivelli
- * last author:         $Author: Aalinone $
- * @version             $Revision: 67057 $
- * last modified:       $Modtime: 31/01/08 12.15 $
- * last check-in:       $Date: 31/01/08 12.15 $
  */
 public abstract class MetadataProviderAdapter implements MetadataProvider {
 

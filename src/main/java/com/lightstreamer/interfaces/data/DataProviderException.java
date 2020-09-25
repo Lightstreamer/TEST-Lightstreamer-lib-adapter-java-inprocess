@@ -21,12 +21,6 @@ import javax.annotation.Nullable;
  * Thrown by the init method in DataProvider if there is some problem
  * that prevents the correct behavior of the Data Adapter.
  * If this exception occurs, Lightstreamer Kernel must give up the startup.
- *
- * @author          Dario Crivelli
- * last author:     $Author: Aalinone $
- * @version         $Revision: 19285 $
- * last modified:   $Modtime: 17/01/07 16.14 $
- * last check-in:   $Date: 17/01/07 16.15 $
  */
 public class DataProviderException extends Exception {
 

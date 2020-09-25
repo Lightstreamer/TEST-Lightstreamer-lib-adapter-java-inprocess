@@ -34,12 +34,6 @@ import java.util.Iterator;
  * construction. If the implementation were slow, the whole update delivery
  * process, even for different sessions, would be slowed down.
  *
- * @author          ...
- * last author:     $Author: Aalinone $
- * @version         $Revision: 67138 $
- * last modified:   $Modtime: 17/01/07 16.14 $
- * last check-in:   $Date: 17/01/07 16.15 $
- *
  * @see ItemEventListener
  * @see OldItemEvent
  * @see IndexedItemEvent
