@@ -29,6 +29,12 @@ Since the API is available from the Maven Central Repository, to setup your deve
 </dependency>
 ```
 
+### LiteralBasedProvider
+
+In the package we officially distribute through Maven the `LiteralBasedProvider` class is already included.
+But it is not included in this project since there is a dedicated project.
+It is used in some of our examples and in case you need it with your version of these adapters you should consider including this project [Lightstreamer - Reusable Metadata Adapters - Java Adapter](https://github.com/Lightstreamer/Lightstreamer-example-ReusableMetadata-adapter-java).
+
 ## External Links
 
 - [Maven repository](https://mvnrepository.com/artifact/com.lightstreamer/ls-adapter-inprocess)
