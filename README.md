@@ -38,7 +38,8 @@ It is also useful when developing proof of concepts and prototypes, where the ma
 
 #### Configure the LiteralBasedProvider Metadata Adapter
 
-Then configure the right Metadata provider and its properties in the `adapters.xml` descriptor file within your adapters' subfolder. The following code snippet shows an example: 
+The following code snippet shows an example of `adapters.xml` configuration of the LiteralBasedProvider Metadata provider and its properties:
+
 ```xml
   <!-- Mandatory. Define the Metadata Provider. -->
   <metadata_provider>
