@@ -31,7 +31,7 @@ Since the API is available from the Maven Central Repository, to setup your deve
 
 ### LiteralBasedProvider Metadata Adapter
 
-This project includes a simple full implementations of Metadata Adapter in Java made available as sample for inspiration and/or extension.
+This project includes a simple full implementation of Metadata Adapter in Java, <b>LiteralBasedProvider</b>, made available as sample for inspiration and/or extension.
 
 The LiteralBasedProvider extends the MetadataProviderAdapter abstract class (which in turn implements the MetadataProvider interface). It is used in many Lightstreamer examples and demos, in combination with different Data Adapters and Clients.
 It is also useful when developing proof of concepts and prototypes, where the main focus is on the Data Adapter.
