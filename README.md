@@ -106,6 +106,21 @@ The following code snippet shows an example of `adapters.xml` configuration of t
 
 Above, are shown only the specific parameters of *LiteralBasedProvider* Metadata Adapter. Use the generic template (see the [Java In-Process Adapter Interface Project](https://github.com/Lightstreamer/Lightstreamer-lib-adapter-java-inprocess#configuration) ) as a reference for a complete overview of configuration options.
 
+## Build
+
+To build your own version of the Java In-process Adapter library, you have two options:
+either use [Maven](https://maven.apache.org/) (or other build tools) to take care of dependencies and building (recommended) or gather the necessary jars yourself and build it manually.
+For the sake of simplicity only the Maven case is detailed here.
+
+### Maven
+You can easily build this library using Maven through the pom.xml file located in the root folder of this project. As an alternative, you can use an alternative build tool (e.g. Gradle, Ivy, etc.) by converting the provided pom.xml file.
+
+Assuming Maven is installed and available in your path you can build the library by running
+
+```sh
+ mvn package
+```
+
 ## External Links
 
 - [Maven repository](https://mvnrepository.com/artifact/com.lightstreamer/ls-adapter-inprocess)
