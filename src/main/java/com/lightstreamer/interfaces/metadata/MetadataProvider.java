@@ -532,21 +532,21 @@ public interface MetadataProvider {
     // No specific pertaining pool.
 
     /**
-     * Called by Lightstreamer Kernel to ask for the minimum ItemEvent
-     * frequency from the supplier Data Adapter at which the events for an Item are
-     * guaranteed to be delivered to the Clients without loss of information.
-     * In case of an incoming ItemEvent frequency greater than the specified
-     * frequency, Lightstreamer Kernel may prefilter the events flow down to
-     * this frequency.
+     * Called by Lightstreamer Kernel to ask for the minimum ItemEvent frequency
+     * that ensures that all subscribers of an Item can be fed with an adequate
+     * amount of information. In practice, in case of an incoming ItemEvent
+     * frequency from the Data Adapter that is greater than the specified value,
+     * Lightstreamer Kernel may prefilter the events flow, by resampling it down
+     * to the specified frequency, before feeding the ItemEventBuffers.
      * Such prefiltering applies only for Items requested with publishing Mode
      * MERGE or DISTINCT.
      * <BR>
      * The frequency set should be greater than the ItemUpdate frequencies
-     * allowed to the different Users for that Item. Moreover, because this
+     * allowed to the different Users for the Item. Moreover, because this
      * filtering is made without buffers, the frequency set should be far
-     * greater than the ItemUpdate frequencies allowed for that Item for which
+     * greater than the ItemUpdate frequencies allowed for the Item, in case
      * buffering of event bursts is desired.
-     * If an Item is requested with publishing Mode MERGE or DISTINCT and
+     * If an Item is requested with publishing Mode MERGE or DISTINCT but with
      * unfiltered dispatching, then specifying any limited source frequency
      * will cause the refusal of the request by the Kernel.
      * <BR>

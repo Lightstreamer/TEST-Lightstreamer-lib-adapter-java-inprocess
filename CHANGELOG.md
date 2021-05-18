@@ -1,5 +1,18 @@
 # Lightstreamer Changelog - SDK for Java In-Process Adapters
 
+## [current state]
+
+**Improvements**
+
+- Removed the provided template of adapters.xml. For this template we now refer to the one provided by LS Server.
+
+- Removed the use of @Nonnull for primitive types, which could have caused compilation issues.
+
+- Clarified in the javadoc the description of the getMinSourceFrequency of the MetadataProvider interface.
+
+- Clarified in the javadoc the description of the SmartDataProvider interface.
+
+
 ## [7.3.0] (10-07-2020)
 
 *Compatible with Lightstreamer Server since 7.1.*  
