@@ -103,9 +103,9 @@ public interface MetadataProvider {
      * @param listener a listener.
      */
     public default void setListener(@Nonnull MetadataControlListener listener) {
-        // Pertaining to server startup.
         // we will do without the listener
     }
+    // Pertaining to server startup.
 
     /**
      * Called by Lightstreamer Kernel as a preliminary check that a user is
@@ -706,9 +706,9 @@ public interface MetadataProvider {
      * limit will be applied.
      */
     public default int getSessionTimeToLive(@Nullable String user, @Nonnull String session) {
-        // Pertaining to SET pool.
         return 0;
     }
+    // Pertaining to SET pool.
 
     /**
      * Called by Lightstreamer Kernel to notify the Metadata Adapter that
@@ -846,7 +846,7 @@ public interface MetadataProvider {
      */
     public void notifyMpnDeviceAccess(@Nullable String user, @Nonnull String sessionID, @Nonnull MpnDeviceInfo device)
             throws CreditsException, NotificationException;
-    // Pertaining to DATA pool.
+    // Pertaining to MPN REQUESTS pool.
 
     /**
      * Called by Lightstreamer Kernel to check that a User is enabled 
@@ -890,7 +890,7 @@ public interface MetadataProvider {
      */
     public void notifyMpnSubscriptionActivation(@Nullable String user, @Nonnull String sessionID, @Nonnull TableInfo table, @Nonnull MpnSubscriptionInfo mpnSubscription)
             throws CreditsException, NotificationException;
-    // Pertaining to DATA pool.
+    // Pertaining to MPN REQUESTS pool.
     
     /**
      * Called by Lightstreamer Kernel to check that a User is enabled to change
@@ -923,7 +923,7 @@ public interface MetadataProvider {
      */
     public void notifyMpnDeviceTokenChange(@Nullable String user, @Nonnull String sessionID, @Nonnull MpnDeviceInfo device, @Nonnull String newDeviceToken)
             throws CreditsException, NotificationException;
-    // Pertaining to DATA pool.
+    // Pertaining to MPN REQUESTS pool.
 }
 
 
