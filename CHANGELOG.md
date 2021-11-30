@@ -17,8 +17,6 @@
 
 *Compatible with Lightstreamer Server since 7.1.*  
 *May not be compatible with code developed with the previous version; see compatibility notes below.*  
-*Compatible with configuration files for the previous version.*  
-*Compatible with the deployment structure of the previous version.*
 
 **New Features**
 
@@ -39,8 +37,6 @@ https://github.com/Lightstreamer/Lightstreamer-lib-adapter-java-inprocess
 
 *Compatible with Lightstreamer Server since 7.1.*  
 *Compatible with code developed with the previous version.*  
-*Compatible with configuration files for the previous version.*  
-*Compatible with the deployment structure of the previous version.*
 
 **New Features**
 
@@ -70,8 +66,6 @@ This will allow the Adapter to specify a time-to-live for the session, which wil
 
 *Compatible with Lightstreamer Server since 7.0.*  
 *Compatible with code developed with the previous version.*  
-*Compatible with configuration files for the previous version.*  
-*Compatible with the deployment structure of the previous version.*
 
 **Improvements**
 
