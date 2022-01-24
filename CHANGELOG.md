@@ -132,7 +132,7 @@ See the Javadocs for details (see also the <mpn_pool> element in the sample adap
 *On the other hand, existing Metadata Adapter binaries are still supported (but for the unlikely case of a name conflict with the new methods) and will refuse any MPN-related request (unless the Adapter class inherits from one of the supplied FileBasedProvider, LiteralBasedProvider or MetadataProviderAdapter, where the above considerations hold).*
 
 - Introduced the "clearSnapshot"/"smartClearSnapshot" operations on the ItemEventListener, for clearing the state of an item in a single step (or, in DISTINCT mode, for notifying compatible clients that the update history should be discarded). See the javadocs for details.<br/>
-**COMPATIBILITY NOTE:** *Existing Data Adapters don't need to be recompiled.*
+**COMPATIBILITY NOTE:** *Existing Data Adapters don't need to be recompiled.*<br/>
 Extended some demo source code to show how the new methods can be invoked.
 
 - Introduced separate ClassLoaders for loading the resources related with the various Adapter Sets. As a consequence, classes pertaining to different Adapter Sets can no longer see each other, though they can still share any classes defined in the "shared" folder.
@@ -146,9 +146,9 @@ By the way, note that any classes found in "lib" and "classes" under the Adapter
 *However, note that the slf4j and logback libraries have been updated; hence, if any custom Adapter has to keep sharing these libraries, check out the slf4j and logback changelogs for any compatibility issues.*
 
 - Embedded the binaries of the basic LiteralBasedProvider in *ls-adapter-interface.jar*. As a consequence, the *ls-generic-adapters.jar* file is no longer provided. Note that this library was also predeployed in the "shared" folder.<br/>
-**COMPATIBILITY NOTE:** *If an existing Adapter installation is based on the LiteralBasedProvider and includes the ls-generic-adapters.jar file within its own folder, the jar should be removed to avoid confusion.*
+**COMPATIBILITY NOTE:** *If an existing Adapter installation is based on the LiteralBasedProvider and includes the ls-generic-adapters.jar file within its own folder, the jar should be removed to avoid confusion.*<br/>
 Also note that the removed library also included the sample FileBasedProvider, which is no longer provided.<br/>
-**COMPATIBILITY NOTE:** *In the unlikely case of an existing Adapter installation based on the FileBasedProvider, the old ls-generic-adapters.jar should be left; if it had been left in the "shared" folder, it is recommended to place it within the Adapter's own folder.*
+**COMPATIBILITY NOTE:** *In the unlikely case of an existing Adapter installation based on the FileBasedProvider, the old ls-generic-adapters.jar should be left; if it had been left in the "shared" folder, it is recommended to place it within the Adapter's own folder.*<br/>
 Extended the interface Javadocs to include the LiteralBasedProvider, previously documented under the "examples" folder.
 
 - Added identification tags at the beginning of the various sample adapters.xml files provided. By keeping them in your own adapter configuration files, future upgrades of these files may be automated.
@@ -157,7 +157,7 @@ Extended the interface Javadocs to include the LiteralBasedProvider, previously 
 
 - Changed the initialization order for Metadata Adapters and Data Adapters. By default the Metadata Adapter is initialised before any Data Adapter of the same Adapter Set. 
 The optional configuration parameter "metadata_adapter_initialised_first" has been added to the adapters.xml configuration file to initialise the Metadata Adapter in parallel with the Data Adapters.<br/>
-**COMPATIBILITY NOTE:** *Existing Adapter Sets relying on a concurrent initialization of Data and Metadata Adapters (may be the case for Remote Adapters) should use the "metadata_adapter_initialised_first" configuration parameter to restore the parallel initialization.*
+**COMPATIBILITY NOTE:** *Existing Adapter Sets relying on a concurrent initialization of Data and Metadata Adapters (may be the case for Remote Adapters) should use the "metadata_adapter_initialised_first" configuration parameter to restore the parallel initialization.*<br/>
 Distinct Adapter Sets are initialised in parallel as before.
 
 - Introduced a sample adapters.xml configuration file, which includes the description of all parameters, in the new "adapter_conf_template" folder under "docs". It should be used as the reference for adapters.xml writing. On the other hand, the adapter configuration file of the preinstalled welcome page is no longer meant as a reference.
@@ -194,7 +194,7 @@ Clarified the docs with regard to the thread pools involved in the various adapt
 **Improvements**
 
 - Relieved the locking policy on the invocation of the "notifyNewTables" and "notifyTablesClose" callbacks, so that delays on the callback execution no longer propagate to the update flow for the session. As a consequence, blocking implementations of "notifyNewTables" are now allowed. See the javadocs for details.<br/>
-**COMPATIBILITY NOTE:** *In some cases, the relative order of data and notification events may change, but only when different tables are involved, in which case no order specification has never been claimed.*
+**COMPATIBILITY NOTE:** *In some cases, the relative order of data and notification events may change, but only when different tables are involved, in which case no order specification has never been claimed.*<br/>
 This also fixes an issue in the support of the Adapter Remoting Infrastructure, in which the implementation of "notifyNewTables" can't but be potentially blocking.
 
 - Fixed a typo in the documentation of the init method of both adapters, where "adapter_conf.id" was reported instead of "adapters_conf.id".
