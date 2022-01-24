@@ -138,11 +138,11 @@ Extended some demo source code to show how the new methods can be invoked.
 - Introduced separate ClassLoaders for loading the resources related with the various Adapter Sets. As a consequence, classes pertaining to different Adapter Sets can no longer see each other, though they can still share any classes defined in the "shared" folder.
 By the way, note that any classes found in "lib" and "classes" under the Adapter Set folder are now added to the Adapter Set ClassLoader, even if all the Adapters declare a different dedicated <install_dir>.<br/>
 **COMPATIBILITY NOTE:** *Existing Adapter code that leans on class sharing between the Adapter Sets may fail; however, the old behavior can be restored by simply placing all jars and classes in the "shared" folder. Moreover, introduced the possibility of loading the classes of single Metadata or Data Adapters in dedicated ClassLoaders (still inheriting from the ClassLoader of the Adapter Set);*
-*see the new <classloader> configuration element in the sample adapters.xml for details.*
+*see the new \<classloader\> configuration element in the sample adapters.xml for details.*
 
 - As a consequence of the introduction of separate ClassLoaders for the loading of the external libraries used by Lightstreamer Server internally, all these libraries are no longer visible from Adapter code.<br/>
 **COMPATIBILITY NOTE:** *Existing Adapters that lean on libraries included by Lightstreamer Server should now include these libraries explicitly. Sharing of library state is no longer possible, but it was not supposed to be leveraged anyway.*
-*The only exception is for logging. If any Adapter leans on the instance of slf4j/logback included by the Server (perhaps in order to share the log configuration), it can be configured to share these libraries through the new <classloader> setting in adapters.xml (see the sample adapters.xml for details). In particular, this is the case for Proxy Adapters.*
+*The only exception is for logging. If any Adapter leans on the instance of slf4j/logback included by the Server (perhaps in order to share the log configuration), it can be configured to share these libraries through the new \<classloader\> setting in adapters.xml (see the sample adapters.xml for details). In particular, this is the case for Proxy Adapters.*
 *However, note that the slf4j and logback libraries have been updated; hence, if any custom Adapter has to keep sharing these libraries, check out the slf4j and logback changelogs for any compatibility issues.*
 
 - Embedded the binaries of the basic LiteralBasedProvider in *ls-adapter-interface.jar*. As a consequence, the *ls-generic-adapters.jar* file is no longer provided. Note that this library was also predeployed in the "shared" folder.<br/>
