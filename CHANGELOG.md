@@ -1,6 +1,6 @@
 # Lightstreamer Changelog - SDK for Java In-Process Adapters
 
-## [current state]
+## [7.3.1] (08-04-2020)
 
 **Improvements**
 
