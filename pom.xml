@@ -12,7 +12,7 @@
   <name>Lightstreamer Java In-Process Adapter API</name>
   <description>
     This project includes the source code of the Lightstreamer Java In-Process Adapter API.
-	This resource is needed to develop Data Adapters and Metadata Adapters for Lightstreamer Server in Java.
+    This resource is needed to develop Data Adapters and Metadata Adapters for Lightstreamer Server in Java.
   </description>
   <url>https://github.com/Lightstreamer/Lightstreamer-lib-adapter-java-inprocess</url>
   
@@ -64,7 +64,7 @@
       <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
-	<dependency>
+    <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
       <version>3.0.2</version>
@@ -118,7 +118,7 @@
             <configuration>
               <doctitle>${project.name} ${project.version}</doctitle>
               <windowtitle>${project.artifactId} ${project.version}</windowtitle>
-			  <additionalJOption>--no-module-directories</additionalJOption>
+              <additionalJOption>--no-module-directories</additionalJOption>
             </configuration>
             <executions>
               <execution>
@@ -149,7 +149,7 @@
         </plugins>
       </build>
     </profile>
-	<profile>
+    <profile>
       <id>javadoc</id>
       <build>
         <plugins>
@@ -159,7 +159,7 @@
             <configuration>
               <doctitle>${project.name} ${project.version}</doctitle>
               <windowtitle>${project.artifactId} ${project.version}</windowtitle>
-			  <additionalJOption>--no-module-directories</additionalJOption>
+              <additionalJOption>--no-module-directories</additionalJOption>
             </configuration>
             <executions>
               <execution>
