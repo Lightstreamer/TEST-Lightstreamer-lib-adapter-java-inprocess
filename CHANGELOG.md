@@ -6,11 +6,11 @@
 
 - Removed the provided template of adapters.xml. For this template we now refer to the one provided by LS Server.
 
+- Added the source code of the included LiteralBasedProvider class; previously, this code was taken from a separate project.
+
 - Removed the use of @Nonnull for primitive types, which could have caused compilation issues.
 
-- Clarified in the javadoc the description of the getMinSourceFrequency of the MetadataProvider interface.
-
-- Clarified in the javadoc the description of the SmartDataProvider interface.
+- Added clarifications in the javadoc; in particular, revised the descriptions of the SmartDataProvider interface and of getMinSourceFrequency in the MetadataProvider interface.
 
 
 ## [7.3.0] (10-07-2020)
