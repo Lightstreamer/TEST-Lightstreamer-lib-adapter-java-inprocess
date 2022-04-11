@@ -2,6 +2,9 @@
 
 ## [7.3.1] (08-04-2022)
 
+*Compatible with Lightstreamer Server since 7.1.*  
+*Compatible with code developed with the previous version*  
+
 **Improvements**
 
 - Removed the provided template of adapters.xml. For this template we now refer to the one provided by LS Server.
