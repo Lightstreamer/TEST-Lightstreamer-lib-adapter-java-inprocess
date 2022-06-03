@@ -224,6 +224,8 @@ public class TableInfo {
      * which has provided an array of TableInfo with a single element (this one);
      * otherwise it will do nothing. However, the case of arrays with multiple
      * elements is only possible when extremely old client SDKs are in use.
+     * <BR>The operation is also not available on objects obtained from an
+     * invocation of {@link MetadataProvider#notifyMpnSubscriptionActivation()}.
      * 
      * @return A CompletionStage that provides the operation outcome.
      * Note that any continuations requested to this CompletionStage
