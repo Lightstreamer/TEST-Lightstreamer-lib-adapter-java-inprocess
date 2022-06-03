@@ -22,8 +22,9 @@ import javax.annotation.Nullable;
 
 /**
  * Used by Lightstreamer to provide value objects to the calls
- * to methods {@link MetadataProvider#notifyNewTables} and
- * {@link MetadataProvider#notifyTablesClose}.
+ * to methods {@link MetadataProvider#notifyNewTables},
+ * {@link MetadataProvider#notifyTablesClose}, and
+ * {@link MetadataProvider#notifyMpnSubscriptionActivation()}.
  * The attributes of every Table (i&#46;e&#46;: Subscription) to be added or removed
  * to a Session have to be written to a TableInfo instance.
  * The object also provides useful queries and operations that can be performed
