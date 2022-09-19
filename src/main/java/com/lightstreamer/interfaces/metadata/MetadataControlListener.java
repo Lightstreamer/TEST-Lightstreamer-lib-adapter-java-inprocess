@@ -15,6 +15,7 @@
 
 package com.lightstreamer.interfaces.metadata;
 
+import java.util.Map;
 import java.util.concurrent.CompletionStage;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -38,7 +39,7 @@ public interface MetadataControlListener {
      * receive the notification of the termination according with the API
      * in use, together with a proper cause code.
      * <BR>Invoking this request while still inside the execution
-     * of {@link MetadataProvider#notifyNewSession} related with the
+     * of {@link MetadataProvider#notifyNewSession(String, String, Map)} related with the
      * supplied session ID is pointless; however, the request will be
      * held, then carried out after the underlying session initiation
      * has finished. If the session termination occurs while the client
@@ -66,7 +67,7 @@ public interface MetadataControlListener {
      * receive the notification of the termination according with the API
      * in use, together with the specified cause code and optional custom message.
      * <BR>Invoking this request while still inside the execution
-     * of {@link MetadataProvider#notifyNewSession} related with the
+     * of {@link MetadataProvider#notifyNewSession(String, String, Map)} related with the
      * supplied session ID is pointless; however, the request will be
      * held, then carried out after the underlying session initiation
      * has finished. If the session termination occurs while the client

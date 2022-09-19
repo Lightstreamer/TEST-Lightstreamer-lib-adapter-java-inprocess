@@ -1,9 +1,41 @@
 # Lightstreamer Changelog - SDK for Java In-Process Adapters
 
+
+## [7.4.0] (19-09-2022)
+
+*Compatible with Lightstreamer Server since 7.3.*  
+*May not be compatible with code developed with the previous version; see compatibility notes below.*  
+
+**New Features**
+
+- Extended all the MetadataProvider interface methods in which the arguments include an item name, by adding a further argument that specifies the name of the related Data Adapter.
+The change affects a large part of the interface and it is actually a fix for the lack of this information, since items with the same name can be supplied by different Data Adapters.
+Note that the new "dataAdapter" argument always follows immediately the "item" argument, so it has not always been added as the last one.<br/>
+Likewise, extended the getItems and getSchema methods to specify the name of the Data Adapter included in the client subscription request.<br/>
+On the other hand, the MetadataProviderAdapter and LiteralBasedProvider classes have been extended by adding the new method versions and keeping the old ones, whereas the new versions discard the new dataAdapter argument and invoke the old ones.<br/>
+**COMPATIBILITY NOTE:** *Adapter source code has to be ported, by adding the new argument on all the modified methods. In most cases, the new argument can be ignored; in some cases it may be leveraged to remove existing workarounds to handle item name conflicts.*<br/>
+*However, Adapter source code inheriting from LiteralBasedProvider doesn't need to be changed; likewise, Adapter source code inheriting from MetadataProviderAdapter needs to be changed only with reference to getItems and getSchema. Anyway, the porting is always recommended.*<br/>
+**COMPATIBILITY NOTE:** *Existing Adapter binaries built with the previous library version are still supported by the Server.*<br/>
+In order to ensure binary-level backward compatibility, the Adapter is now inspected to look for either the old or the new version of the modified methods.
+However, if both versions are found in custom code, the Adapter loading (and the Server startup) will fail, as being ambiguous.
+This restriction is generalized as a fully-fledged interface contract extension for the MetadataProvider interface, although not always enforced.<br/>
+**COMPATIBILITY NOTE:** *When porting Adapter source code, the old versions of the modified methods cannot be left, or cannot be declared as public.*<br/>
+**COMPATIBILITY NOTE:** *Existing Adapter binaries built with the previous library version and which happen to include a public overload that matches one of the new methods will not be supported.*
+
+- Introduced the declareFieldDiffOrder and smartDeclareFieldDiffOrder methods in the ItemEventListener class.
+Together with the new DiffAlgorithm class, they allow a Data Adapter to specify which algorithms, and in which order,
+the Server should try, in order to compute the difference between a value and the previous one in order to send the client
+this difference, for "delta delivery" purpose.<br/>
+Currently, the following options are available:
+	- JSON Patch, which the Server can use when the involved values are valid JSON representations.
+	- Google's "diff-match-patch" algorithm (the result is then serialized with the custom "TLCP-diff" format).<br/>
+**COMPATIBILITY NOTE:** *Invoking the new method is optional and by default no algorithm is tried by the Server; hence there are no backward compatibility issues.*
+
+
 ## [7.3.1] (08-04-2022)
 
 *Compatible with Lightstreamer Server since 7.1.*  
-*Compatible with code developed with the previous version*  
+*Compatible with code developed with the previous version.*  
 
 **Improvements**
 

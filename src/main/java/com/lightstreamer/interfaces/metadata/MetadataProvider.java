@@ -40,6 +40,16 @@ import javax.annotation.Nullable;
  * Lightstreamer Kernel at startup, then its init method is called, providing
  * it with the configuration information. For this purpose, any Metadata
  * Adapter must provide a void constructor.
+ * <BR>Note: in order to support method extensions, the Server may inspect
+ * The Metadata Adapter binaries to look for methods based on old signatures.
+ * For this reason, the custom part of the Adapter implementation is only
+ * allowed to contain a single public overload for each interface method,
+ * otherwise the Adapter can be refused (with the exception of notifyUser,
+ * which has two overloaded versions).
+ * But see {@link MetadataProviderAdapter} and
+ * {@link com.lightstreamer.adapters.metadata.LiteralBasedProvider}
+ * for special cases related to the use of these classes.
+ * <BR>
  * <BR>A Metadata Provider is consulted by Lightstreamer Kernel in order
  * to manage the push Requests intended for the associated Data Providers.
  * A Metadata Provider supplies information for several different goals:
@@ -49,15 +59,8 @@ import javax.annotation.Nullable;
  * <LI> the check of the resource level granted to the User. </LI>
  * <LI> the request for specific characteristics of the Items. </LI>
  * </UL>
- * Note: Each Item may be supplied by one or more of the associated Data
- * Adapters and each client Request must reference to a specific Data Adapter.
- * However, in the current version of the interface, no Data Adapter
- * information is supplied to the Metadata Adapter methods. Hence, the Item
- * names must provide enough information for the methods to give an answer.
- * As a consequence, for instance, the frequency, snapshot length and other
- * characteristics of an item are the same regardless of the Data Adapter
- * it is requested from. More likely, for each item name defined, only one
- * of the Data Adapters in the set is responsible for supplying that item.
+ * Note that each Item may be supplied by one or more of the associated Data
+ * Adapters, hence each client Request always references a specific Data Adapter.
  */
 public interface MetadataProvider {
 	
@@ -210,7 +213,8 @@ public interface MetadataProvider {
      * list of the names of the items in the List. This convention is used
      * by some of the subscription methods provided by the various client
      * libraries. The specifications for these methods require that
-     * "A LiteralBasedProvider or equivalent Metadata Adapter is needed
+     * "A {@link com.lightstreamer.adapters.metadata.LiteralBasedProvider}
+     * or equivalent Metadata Adapter is needed
      * on the Server in order to understand the Request".
      * <BR>When any of these interface methods is used by client code accessing
      * this Metadata Adapter, the supplied "group" argument should be inspected
@@ -252,11 +256,12 @@ public interface MetadataProvider {
      * @param user A User name.
      * @param sessionID The ID of a Session owned by the User.
      * @param group An Item Group name (or Item List specification).
+     * @param dataAdapter The name of the Data Adapter to which the subscription is targeted.
      * @return An array with the names of the Items in the Group.
      * @throws ItemsException if the supplied Item Group name (or Item List specification) is not recognized.
      */
     @Nonnull
-    public String[] getItems(@Nullable String user, @Nonnull String sessionID, @Nonnull String group) throws ItemsException;
+    public String[] getItems(@Nullable String user, @Nonnull String sessionID, @Nonnull String group, @Nonnull String dataAdapter) throws ItemsException;
     // Pertaining to DATA pool.
 
     /**
@@ -270,7 +275,8 @@ public interface MetadataProvider {
      * list of the names of the Fields in the Schema. This convention is used
      * by some of the subscription methods provided by the various client
      * libraries. The specifications for these methods require that
-     * "A LiteralBasedProvider or equivalent Metadata Adapter is needed
+     * "A {@link com.lightstreamer.adapters.metadata.LiteralBasedProvider}
+     * or equivalent Metadata Adapter is needed
      * on the Server in order to understand the Request".
      * <BR>When any of these interface methods is used by client code accessing
      * this Metadata Adapter, the supplied "schema" argument should be inspected
@@ -281,19 +287,20 @@ public interface MetadataProvider {
      * supplied Field List specification by client library code.
      * <BR>
      * <BR>The method should perform fast. See the notes for
-     * {@link #getItems(String, String, String)}.
+     * {@link #getItems(String, String, String, String)}.
      *
      * @param user A User name.
      * @param sessionID The ID of a Session owned by the User.
      * @param group The name of the Item Group (or specification of the Item List)
      * whose Items the Schema is to be applied to.
+     * @param dataAdapter The name of the Data Adapter to which the subscription is targeted.
      * @param schema A Field Schema name (or Field List specification).
      * @return An array with the names of the Fields in the Schema.
      * @throws ItemsException if the supplied Item Group name (or Item List specification) is not recognized.
      * @throws SchemaException if the supplied Field Schema name (or Field List specification) is not recognized.
      */
     @Nonnull
-    public String[] getSchema(@Nullable String user, @Nonnull String sessionID, @Nonnull String group, @Nonnull String schema)
+    public String[] getSchema(@Nullable String user, @Nonnull String sessionID, @Nonnull String group, @Nonnull String dataAdapter, @Nonnull String schema)
         throws ItemsException, SchemaException;
     // Pertaining to DATA pool.
 
@@ -336,7 +343,7 @@ public interface MetadataProvider {
      * of the request by the Kernel.
      * <BR>
      * <BR>The method should perform fast. See the notes for
-     * {@link #getItems(String, String, String)}.
+     * {@link #getItems(String, String, String, String)}.
      * <BR>
      * <B>Edition Note:</B>
      * <BR>A further global frequency limit could also be
@@ -347,10 +354,11 @@ public interface MetadataProvider {
      *
      * @param user A User name.
      * @param item An Item Name.
+     * @param dataAdapter The name of the Data Adapter which supplies the specified item.
      * @return The allowed Update frequency, in Updates/sec. A zero return
      * value means no frequency restriction.
      */
-    public double getAllowedMaxItemFrequency(@Nullable String user, @Nonnull String item);
+    public double getAllowedMaxItemFrequency(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter);
     // Pertaining to DATA pool.
 
     /**
@@ -370,14 +378,15 @@ public interface MetadataProvider {
      * and buffer size settings are ignored.
      * <BR>
      * <BR>The method should perform fast. See the notes for
-     * {@link #getItems(String, String, String)}.
+     * {@link #getItems(String, String, String, String)}.
      *
      * @param user A User name.
      * @param item An Item Name.
+     * @param dataAdapter The name of the Data Adapter which supplies the specified item.
      * @return The allowed buffer size. A zero return value means a potentially
      * unlimited buffer.
      */
-    public int getAllowedBufferSize(@Nullable String user, @Nonnull String item);
+    public int getAllowedBufferSize(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter);
     // Pertaining to DATA pool.
 
     /**
@@ -392,14 +401,15 @@ public interface MetadataProvider {
      * The conflicting Modes are MERGE, DISTINCT and COMMAND.
      * <BR>
      * <BR>The method should perform fast. See the notes for
-     * {@link #getItems(String, String, String)}.
+     * {@link #getItems(String, String, String, String)}.
      *
      * @param user A User name.
      * @param item An Item name.
+     * @param dataAdapter The name of the Data Adapter which supplies the specified item.
      * @param mode A publishing Mode.
      * @return true if the publishing Mode is allowed.
      */
-    public boolean isModeAllowed(@Nullable String user, @Nonnull String item, @Nonnull Mode mode);
+    public boolean isModeAllowed(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter, @Nonnull Mode mode);
     // Pertaining to DATA pool.
 
     /**
@@ -418,10 +428,11 @@ public interface MetadataProvider {
      * for that Data Adapter is a better option.
      *
      * @param item An Item name.
+     * @param dataAdapter The name of the Data Adapter which supplies the specified item.
      * @param mode A publishing Mode.
      * @return true if the publishing Mode is allowed.
      */
-    public boolean modeMayBeAllowed(@Nonnull String item, @Nonnull Mode mode);
+    public boolean modeMayBeAllowed(@Nonnull String item, @Nonnull String dataAdapter, @Nonnull Mode mode);
     // Pertaining to DATA pool.
 
     /**
@@ -431,14 +442,15 @@ public interface MetadataProvider {
      * can or cannot be allowed depending on the User.
      * <BR>
      * <BR>The method should perform fast. See the notes for
-     * {@link #getItems(String, String, String)}.
+     * {@link #getItems(String, String, String, String)}.
      *
      * @param user A User name.
      * @param item An Item name.
+     * @param dataAdapter The name of the Data Adapter which supplies the specified item.
      * @param selector A selector name.
      * @return true if the Selector is allowed.
      */
-    public boolean isSelectorAllowed(@Nullable String user, @Nonnull String item, @Nonnull String selector);
+    public boolean isSelectorAllowed(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter, @Nonnull String selector);
     // Pertaining to DATA pool.
 
     /**
@@ -468,11 +480,12 @@ public interface MetadataProvider {
      *
      * @param user A User name.
      * @param item An Item name.
+     * @param dataAdapter The name of the Data Adapter which supplies the specified item.
      * @param selector A selector name.
      * @param event An update event for the Item.
      * @return true if the event is to be processed by the ItemEventBuffer.
      */
-    public boolean isSelected(@Nullable String user, @Nonnull String item, @Nonnull String selector, @Nonnull ItemEvent event);
+    public boolean isSelected(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter, @Nonnull String selector, @Nonnull ItemEvent event);
     // No specific pertaining pool.
 
     /**
@@ -485,14 +498,15 @@ public interface MetadataProvider {
      * saving some processing time.
      * <BR>
      * <BR>The method should perform fast. See the notes for
-     * {@link #getItems(String, String, String)}.
+     * {@link #getItems(String, String, String, String)}.
      *
      * @param user A User name.
      * @param item An Item name.
+     * @param dataAdapter The name of the Data Adapter which supplies the specified item.
      * @return true if the Metadata Adapter must be notified any time
      * an update for the Item is received in a Session owned by the User.
      */
-    public boolean enableUpdateCustomization(@Nullable String user, @Nonnull String item);
+    public boolean enableUpdateCustomization(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter);
     // Pertaining to DATA pool.
     
     /**
@@ -526,9 +540,10 @@ public interface MetadataProvider {
      *
      * @param user A User name.
      * @param item An Item name.
+     * @param dataAdapter The name of the Data Adapter which supplies the specified item.
      * @param event An update event for the Item, ready to be changed.
      */
-    public void customizeUpdate(@Nullable String user, @Nonnull String item, @Nonnull CustomizableItemEvent event);
+    public void customizeUpdate(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter, @Nonnull CustomizableItemEvent event);
     // No specific pertaining pool.
 
     /**
@@ -558,16 +573,17 @@ public interface MetadataProvider {
      * is suggested.
      * <BR>
      * <BR>The method should perform fast. See the notes for
-     * {@link #modeMayBeAllowed(String, Mode)}.
+     * {@link #modeMayBeAllowed(String, String, Mode)}.
      *
      * @param item An Item Name.
+     * @param dataAdapter The name of the Data Adapter which supplies the specified item.
      * @return The minimum ItemEvent frequency that must be processed without
      * loss of information, in ItemEvents/sec. A zero return value indicates
      * that incoming ItemEvents must not be prefiltered. If the ItemEvents
      * frequency for the Item is known to be very low, returning zero allows
      * Lightstreamer Kernel to save any prefiltering effort.
      */
-    public double getMinSourceFrequency(@Nonnull String item);
+    public double getMinSourceFrequency(@Nonnull String item, @Nonnull String dataAdapter);
     // Pertaining to DATA pool.
 
     /**
@@ -581,13 +597,14 @@ public interface MetadataProvider {
      * returned by this method. The maximum Snapshot size cannot be unlimited.
      * <BR>
      * <BR>The method should perform fast. See the notes for
-     * {@link #modeMayBeAllowed(String, Mode)}.
+     * {@link #modeMayBeAllowed(String, String, Mode)}.
      *
      * @param item An Item Name.
+     * @param dataAdapter The name of the Data Adapter which supplies the specified item.
      * @return The maximum allowed length for the Snapshot; a zero return
      * value means that no Snapshot information should be kept.
      */
-    public int getDistinctSnapshotLength(@Nonnull String item);
+    public int getDistinctSnapshotLength(@Nonnull String item, @Nonnull String dataAdapter);
     // Pertaining to DATA pool.
 
     /**
@@ -716,8 +733,8 @@ public interface MetadataProvider {
      * After this invocation, no more calls to {@link #notifyNewTables} and
      * {@link #notifyTablesClose} for this sessionID are possible.
      * On the other hand, trailing invocations of methods related with the
-     * validation of client requests, like {@link #getItems}, are still possible
-     * on parallel threads and accepting them would have no effect.
+     * validation of client requests, like {@link #getItems(String, String, String, String)},
+     * are still possible on parallel threads and accepting them would have no effect.
      * However, if the method may have side-effects on the Adapter, like
      * {@link #notifyUserMessage}, the Adapter is responsible for checking
      * if the session is still valid.
@@ -762,7 +779,7 @@ public interface MetadataProvider {
      * <BR>The method should perform fast. Any complex data gathering
      * operation (like a check on the overall number of subscribed Items)
      * should have been already performed asynchronously. See the notes
-     * for {@link #getItems(String, String, String)} for details; but see
+     * for {@link #getItems(String, String, String, String)} for details; but see
      * the &lt;sequentialize_table_notifications&gt; parameter available
      * in adapters.xml as well.
      *

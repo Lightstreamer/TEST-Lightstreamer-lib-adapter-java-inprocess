@@ -21,8 +21,9 @@ import javax.annotation.Nullable;
 import java.util.Map;
 
 /**
- * Used by Lightstreamer Kernel to receive the ItemEvents and any asynchronous
- * severe error notification from the Data Adapter.
+ * Used by Lightstreamer Kernel to receive the ItemEvents and other kinds
+ * of events related with the Item subscription lifecycle. It can also
+ * receive asynchronous severe error notifications from the Data Adapter.
  * The listener instance is supplied to the Data Adapter by Lightstreamer
  * Kernel through a setListener call.
  * The listener can manage multiple kinds of ItemEvents: ItemEvent objects,
@@ -50,12 +51,15 @@ import java.util.Map;
  * further restrictions.
  * <BR>The same restriction holds for any underlying object referenced to by
  * the ItemEvent object. However, immutable objects are obviously unaffected;
- * in particular, this holds for any objects used to contain values, if they
+ * in particular, the latter holds for any objects used to contain values, if they
  * are of String type; but also any byte array objects used to contain values
  * are unaffected and can be reused if they are no longer modified.
  * <BR>If ItemEvents are implemented as wrappers of the data objects received
  * from the external feed (like JMS Messages), all the above has to be
  * carefully considered.
+ * <BR>Similar considerations hold for the Map objects that can be used to
+ * provide Field "diff" support information (see {@link #declareFieldDiffOrder}
+ * and {@link #smartDeclareFieldDiffOrder}) and their contents.
  *
  * @see DataProvider
  */
@@ -322,6 +326,67 @@ public interface ItemEventListener {
      * @see SmartDataProvider
      */
     public void smartClearSnapshot(@Nonnull Object itemHandle);
+
+    /**
+     * Called by a Data Adapter to send to Lightstreamer kernel Field
+     * "diff" support information in relation to a specific subscribed Item.
+     * By default, the Server can decide whether or not to try to apply
+     * an available algorithm to compute the difference between a value
+     * and the previous one in order to send the client this difference,
+     * for "delta delivery" purpose. The applicability of an algorithm
+     * depends on the capability of the client, the suitability of the
+     * values, and the throughput efficiency achieved. 
+     * With this method, it is possible to enforce which algorithms to try
+     * and in which order, on a field-by-field basis. The available algorithms
+     * are specified in the {@link DiffAlgorithm} enumerative class.
+     * <BR>The declared "diff" order is a static property of fields, hence
+     * it cannot change throughout all the duration of the subscription.
+     * For this reason, this method should be invoked before any update is sent.
+     * However, since the available Fields may not be fully predetermined
+     * and new Fields may be added at any time, it is possible to invoke
+     * this method multiple times, interspersed with update events, with
+     * a cumulative behavior.
+     * <BR>As a consequence, any attempt to declare the "diff" order of a
+     * Field for which it has been already specified will be ignored.
+     * Moreover, if a Field is used in an update before sending any "diff"
+     * order information, it will stick to the Server default, and any
+     * subsequent specification of a "diff" order for that field will be ignored.
+     * <BR>By specifying "diff" algorithms consistent with the expected values,
+     * a significant outbound bandwidth reduction can be achieved. On the other
+     * hand, if unsuitable values are sent (for instance, strings that are not
+     * valid JSON representations for a Field with the {@link DiffAlgorithm#JSONPATCH}
+     * algorithm specified), a significant computational overhead with no
+     * useful effect may be added.
+     *
+     * @param itemName  The name of the Item whose "diff" order information
+     * is carried by this notification.
+     * @param algorithmsMap  A java.util.Map instance, in which Field names are
+     * associated to ordered arrays of "diff" algorithms. Omitted fields or
+     * null arrays will add no information. On the other hand, an empty array
+     * can be supplied to mean that no "diff" algorithm is admitted for a field.
+     */
+    public void declareFieldDiffOrder(@Nonnull String itemName, @Nonnull Map<String, DiffAlgorithm[]> algorithmsMap);
+
+    /**
+     * Can be called, instead of declareFieldDiffOrder, by a Data Adapter
+     * that implements the extended interface SmartDataProvider,
+     * in all cases in which declareFieldDiffOrder can be called.
+     * <BR>This method should not be called while holding custom locks.
+     * After that an unsubscribe call for the Item has returned, further
+     * calls of this method for the itemHandler received with the last
+     * subscription operation are still allowed and will be just discarded.
+     *
+     * @param itemHandle  Identifies an Item whose "diff" order information
+     * is carried by this notification.
+     * @param algorithmsMap  A java.util.Map instance, in which Field names are
+     * associated to ordered arrays of "diff" algorithms. Omitted fields or
+     * null arrays will add no information. On the other hand, an empty array
+     * can be supplied to mean that no "diff" algorithm is admitted for a field.
+     * 
+     * @see #declareFieldDiffOrder
+     * @see SmartDataProvider
+     */
+    public void smartDeclareFieldDiffOrder(@Nonnull Object itemHandle, @Nonnull Map<String, DiffAlgorithm[]> algorithmsMap);
 
     /**
      * Called by a Data Adapter to notify Lightstreamer Kernel of the

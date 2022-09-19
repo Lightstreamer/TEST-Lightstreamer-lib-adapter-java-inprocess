@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Used by Lightstreamer to provide value objects to the calls
  * to methods {@link MetadataProvider#notifyNewTables},
  * {@link MetadataProvider#notifyTablesClose}, and
- * {@link MetadataProvider#notifyMpnSubscriptionActivation()}.
+ * {@link MetadataProvider#notifyMpnSubscriptionActivation}.
  * The attributes of every Table (i&#46;e&#46;: Subscription) to be added or removed
  * to a Session have to be written to a TableInfo instance.
  * The object also provides useful queries and operations that can be performed
@@ -180,7 +180,7 @@ public class TableInfo {
      * Returns the array of the Item names involved in this Table
      * (i&#46;e&#46;: Subscription).
      * The sequence of names is the same one returned by
-     * {@link MetadataProvider#getItems(String, String, String)}
+     * {@link MetadataProvider#getItems(String, String, String, String)}
      * when decoding of the group name, but restricted, in case a first and/or last
      * Item was specified in the client request (see {@link #getMin()} and {@link #getMax()}). 
      *
@@ -225,7 +225,7 @@ public class TableInfo {
      * otherwise it will do nothing. However, the case of arrays with multiple
      * elements is only possible when extremely old client SDKs are in use.
      * <BR>The operation is also not available on objects obtained from an
-     * invocation of {@link MetadataProvider#notifyMpnSubscriptionActivation()}.
+     * invocation of {@link MetadataProvider#notifyMpnSubscriptionActivation}.
      * 
      * @return A CompletionStage that provides the operation outcome.
      * Note that any continuations requested to this CompletionStage

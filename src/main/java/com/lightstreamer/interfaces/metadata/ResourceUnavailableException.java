@@ -15,10 +15,12 @@
 
 package com.lightstreamer.interfaces.metadata;
 
+import java.util.Map;
+
 import javax.annotation.Nullable;
 
 /**
- * Can be thrown by the {@link MetadataProvider#notifyUser} methods
+ * Can be thrown by the {@link MetadataProvider#notifyUser(String, String, Map)} methods
  * instead of a generic {@link AccessException} if the User credentials
  * cannot be validated because of a temporary lack of resources
  * <BR>When receiving this exception, the Server will instruct the client

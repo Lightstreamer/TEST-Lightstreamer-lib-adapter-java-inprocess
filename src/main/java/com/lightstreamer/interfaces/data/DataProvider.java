@@ -46,7 +46,7 @@ import java.util.Map;
  * to an item, the current state of the Item data can be sent to the Kernel
  * before the updates. This allows the Kernel to maintain the Item state,
  * by integrating the new ItemEvents into the state (in a way that depends
- * on the Item type) and to make this state available to the Clients.
+ * on the Item mode) and to make this state available to the Clients.
  * <BR>Note that the interaction between the Kernel and the Data Adapter and the
  * interaction between the Kernel and any Client are independent activities.
  * As a consequence, the very first ItemEvents sent by the Data Adapter to
@@ -199,7 +199,7 @@ public interface DataProvider {
      * after a subscription for an Item, will send some Snapshot ItemEvents
      * before sending the updates.
      * An item Snapshot can be represented by zero, one or more ItemEvents,
-     * also depending on the item type. 
+     * also depending on the item mode. 
      * The decision whether to supply or not to supply Snapshot information
      * is entirely up to the Data Adapter.
      * <BR>

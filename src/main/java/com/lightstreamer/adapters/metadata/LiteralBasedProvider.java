@@ -148,8 +148,21 @@ import com.lightstreamer.interfaces.metadata.SchemaException;
  * }
  * </PRE>
  * 
- * The source code of the Adapter is provided on GitHub:
- * https://github.com/Lightstreamer/Lightstreamer-example-ReusableMetadata-adapter-java
+ * The class, together with the inherited
+ * {@link com.lightstreamer.interfaces.metadata.MetadataProviderAdapter},
+ * also provides implementations for old signature versions
+ * of some methods (in the form of overloads of the current version)
+ * and it forwards the implementations for the current signature
+ * versions to the old ones, which involves discarding some arguments.
+ * As a consequence, a custom Metadata Adapter inheriting from this class
+ * is allowed to stick to old signature versions for its own implementations,
+ * although the use of the current versions is recommended.
+ * However, the restrictions related to the
+ * {@link com.lightstreamer.interfaces.metadata.MetadataProvider}
+ * interface still hold: the custom part of the Adapter is only allowed
+ * to implement at most one version for each interface method, otherwise
+ * the Adapter can be refused (with the exception of notifyUser,
+ * which has two current overloaded versions).
  */
 public class LiteralBasedProvider extends MetadataProviderAdapter {
 
@@ -177,6 +190,7 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * Void constructor required by Lightstreamer Kernel.
      */
     public LiteralBasedProvider() {
+        // legal empty block
     }
 
     /**
@@ -187,6 +201,7 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * @param  dir  Not used.
      * @throws MetadataProviderException in case of configuration errors.
      */
+    @Override
     public void init(Map params, File dir) throws MetadataProviderException {
         String currParam = null;
         try {
@@ -328,30 +343,48 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
     /**
      * Resolves an Item List specification supplied in a Request. The names of the Items
      * in the List are returned.
-     * <BR>The operation is deferred to a simpler 2-arguments version of the
-     * method, where the sessionID argument is discarded. This also ensures
+     * The operation is deferred to a reduced version of the method,
+     * where the dataAdapter argument is discarded. This also ensures
      * backward compatibility with old adapter classes derived from this one.
+     *
+     * @param user A User name.
+     * @param sessionID A Session ID. Not used.
+     * @param itemList An Item List specification.
+     * @param dataAdapter The name of the Data Adapter to which the Item List is targeted.
+     * @return An array with the names of the Items in the List.
+     * @throws ItemsException never thrown
+     */
+    public String[] getItems(String user, String sessionID, String itemList, String dataAdapter) throws ItemsException {
+        return getItems(user, sessionID, itemList);
+    }
+
+    /**
+     * Reduced, backward-compatibility version of the Item List determination method.
+     * The operation is deferred to an even more reduced version of the method,
+     * where the sessionID argument is discarded. This also ensures
+     * backward compatibility with very old adapter classes derived from this one.
      *
      * @param user A User name.
      * @param sessionID A Session ID. Not used.
      * @param itemList An Item List specification.
      * @return An array with the names of the Items in the List.
      * @throws ItemsException never thrown
+     * 
+     * @see #getItems(String, String, String, String)
      */
     public String[] getItems(String user, String sessionID, String itemList) throws ItemsException {
         return getItems(user, itemList);
     }
 
     /**
-     * Resolves an Item List specification supplied in a Request. The names of the Items
-     * in the List are returned.
-     * Item List specifications are expected to be formed by simply concatenating the names
-     * of the contained Items, in a space separated way.
+     * Reduced, backward-compatibility version of the Item List determination method.
      *
      * @param user A User name. Not used.
      * @param itemList An Item List specification.
      * @return An array with the names of the Items in the List.
      * @throws ItemsException never thrown.
+     * 
+     * @see #getItems(String, String, String, String)
      */
     public String[] getItems(String user, String itemList) throws ItemsException {
         return tokenize(itemList);
@@ -360,9 +393,29 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
     /**
      * Resolves a Field List specification supplied in a Request. The names of the Fields
      * in the List are returned.
-     * <BR>The operation is deferred to a simpler 3-arguments version of the
-     * method, where the sessionID argument is discarded. This also ensures
+     * The operation is deferred to a reduced version of the method,
+     * where the dataAdapter argument is discarded. This also ensures
      * backward compatibility with old adapter classes derived from this one.
+     *
+     * @param user A User name.
+     * @param sessionID A Session ID. Not used.
+     * @param itemList The specification of the Item List whose Items the Field List
+     * is to be applied to.
+     * @param dataAdapter The name of the Data Adapter to which the Item List is targeted.
+     * @param fieldList A Field List specification.
+     * @return An array with the names of the Fields in the List.
+     * @throws SchemaException never thrown
+     */
+    public String[] getSchema(String user, String sessionID, String itemList, String dataAdapter, String fieldList)
+            throws SchemaException {
+        return getSchema(user, sessionID, itemList, fieldList);
+    }
+
+    /**
+     * Reduced, backward-compatibility version of the Field List determination method.
+     * The operation is deferred to an even more reduced version of the method,
+     * where the sessionID argument is discarded. This also ensures
+     * backward compatibility with very old adapter classes derived from this one.
      *
      * @param user A User name.
      * @param sessionID A Session ID. Not used.
@@ -371,6 +424,8 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * @param fieldList A Field List specification.
      * @return An array with the names of the Fields in the List.
      * @throws SchemaException never thrown
+     * 
+     * @see #getSchema(String, String, String, String, String)
      */
     public String[] getSchema(String user, String sessionID, String itemList, String fieldList)
             throws SchemaException {
@@ -378,10 +433,7 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
     }
 
     /**
-     * Resolves a Field List specification supplied in a Request. The names of the Fields
-     * in the List are returned.
-     * Field List specifications are expected to be formed by simply concatenating the names
-     * of the contained Fields, in a space separated way.
+     * Reduced, backward-compatibility version of the Field List determination method.
      *
      * @param user A User name. Not used.
      * @param itemList The specification of the Item List whose Items the Field List
@@ -389,6 +441,8 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * @param fieldList A Field List specification.
      * @return An array with the names of the Fields in the List.
      * @throws SchemaException never thrown.
+     * 
+     * @see #getSchema(String, String, String, String, String)
      */
     public String[] getSchema(String user, String itemList, String fieldList)
             throws SchemaException {
@@ -416,11 +470,11 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
     /**
      * Checks if a user is enabled to make Requests to the related Data
      * Providers.
-     * <BR>The check is deferred to a simpler 2-arguments version of the
-     * method, where the httpHeader argument is discarded. This also ensures
-     * backward compatibility with old adapter classes derived from this one.
-     * <BR>Note that, for authentication purposes, only the user and password
+     * Note that, for authentication purposes, only the user and password
      * arguments should be consulted.
+     * <BR>The check is deferred to a reduced version of the method,
+     * where the httpHeader argument is discarded. This also ensures
+     * backward compatibility with very old adapter classes derived from this one.
      *
      * @param user A User name.
      * @param password An optional password.
@@ -429,29 +483,65 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * @throws AccessException if a list of User names has been configured
      * and the supplied name does not belong to the list.
      * @throws CreditsException never thrown.
+     * 
+     * @see #notifyUser(String, String, Map, String)
      */
+    @Override
     public void notifyUser(String user, String password, Map httpHeaders)
             throws AccessException, CreditsException {
     	notifyUser(user, password);
     }
 
     /**
-     * Checks if a user is enabled to make Requests to the related Data
-     * Providers.
-     * If a list of User names has been configured, this list is checked.
-     * Otherwise, any User name is allowed. No password check is performed.
+     * Reduced, backward-compatibility version of the User authentication method.
      *
      * @param user A User name.
      * @param password An optional password. Not used.
      * @throws AccessException if a list of User names has been configured
      * and the supplied name does not belong to the list.
      * @throws CreditsException never thrown.
+     * 
+     * @see #notifyUser(String, String, Map)
      */
+    @Override
     public void notifyUser(String user, String password)
             throws AccessException, CreditsException {
         if (!checkUser(user)) {
             throw new AccessException("Unauthorized user");
         }
+    }
+
+    /**
+     * Extended version of the User authentication method, invoked by the
+     * Server instead of the standard 3-argument one in case it has been
+     * instructed (through the &lt;use_client_auth&gt; configuration flag)
+     * to acquire the client principal from the client TLS/SSL certificate,
+     * if available.
+     * <BR>The check is deferred to the standard version of the method,
+     * where the clientPrincipal argument is discarded.
+     * <BR>
+     * <B>Edition Note:</B>
+     * <BR>https is an optional feature, available
+     * depending on Edition and License Type.
+     * To know what features are enabled by your license, please see the License
+     * tab of the Monitoring Dashboard (by default, available at /dashboard).
+     *
+     * @param user A User name.
+     * @param password A password optionally required to validate the User.
+     * @param httpHeaders A Map-type value object that contains a name-value
+     * pair for each header found in the HTTP request that originated the call.
+     * @param clientPrincipal the identification name reported in the client
+     * TLS/SSL certificate supplied on the socket connection used to issue the
+     * request that originated the call; it can be null if client has not
+     * authenticated itself or the authentication has failed. Not used.
+     * @throws AccessException if a list of User names has been configured
+     * and the supplied name does not belong to the list.
+     * @throws CreditsException never thrown.
+     */
+    @Override
+    public void notifyUser(String user, String password, Map httpHeaders,  String clientPrincipal)
+            throws AccessException, CreditsException {
+        notifyUser(user, password, httpHeaders);
     }
 
     /**
@@ -461,6 +551,7 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * @return The bandwidth, in Kbit/sec, as supplied in the Metadata
      * Adapter configuration.
      */
+    @Override
     public double getAllowedMaxBandwidth(String user) {
         return maxBandwidth;
     }
@@ -468,12 +559,33 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
     /**
      * Returns the ItemUpdate frequency to be allowed to a User for a specific
      * Item.
+     * The operation is deferred to a reduced version of the method,
+     * where the dataAdapter argument is discarded. This also ensures
+     * backward compatibility with old adapter classes derived from this one.
+     *
+     * @param user A User name. Not used.
+     * @param item An Item Name. Not used.
+     * @param dataAdapter A Data Adapter name. Not used.
+     * @return The allowed Update frequency, in Updates/sec, as supplied
+     * in the Metadata Adapter configuration.
+     */
+    @Override
+    public double getAllowedMaxItemFrequency(String user, String item, String dataAdapter) {
+        return getAllowedMaxItemFrequency(user, item);
+    }
+
+    /**
+     * Reduced, backward-compatibility version of the ItemUpdate frequency
+     * authorization method.
      *
      * @param user A User name. Not used.
      * @param item An Item Name. Not used.
      * @return The allowed Update frequency, in Updates/sec, as supplied
      * in the Metadata Adapter configuration.
+     * 
+     * @see #getAllowedMaxItemFrequency(String, String, String)
      */
+    @Override
     public double getAllowedMaxItemFrequency(String user, String item) {
         return maxFrequency;
     }
@@ -481,12 +593,32 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
     /**
      * Returns the size of the buffer internally used to enqueue subsequent
      * ItemUpdates for the same Item.
+     * The operation is deferred to a reduced version of the method,
+     * where the dataAdapter argument is discarded. This also ensures
+     * backward compatibility with old adapter classes derived from this one.
+     *
+     * @param user A User name. Not used.
+     * @param item An Item Name. Not used.
+     * @param dataAdapter A Data Adapter name. Not used.
+     * @return The allowed buffer size, as supplied in the Metadata Adapter
+     * configuration.
+     */
+    @Override
+    public int getAllowedBufferSize(String user, String item, String dataAdapter) {
+        return getAllowedBufferSize(user, item);
+    }
+
+    /**
+     * Reduced, backward-compatibility version of the buffer size authorization method.
      *
      * @param user A User name. Not used.
      * @param item An Item Name. Not used.
      * @return The allowed buffer size, as supplied in the Metadata Adapter
      * configuration.
+     * 
+     * @see #getAllowedBufferSize(String, String, String)
      */
+    @Override
     public int getAllowedBufferSize(String user, String item) {
         return bufferSize;
     }
@@ -498,10 +630,31 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * In case of an incoming ItemEvent frequency greater than the specified
      * frequency, Lightstreamer Kernel may prefilter the events flow down to
      * this frequency.
+     * <BR>The operation is deferred to a reduced version of the method,
+     * where the dataAdapter argument is discarded. This also ensures
+     * backward compatibility with old adapter classes derived from this one.
      * 
+     * @param item An Item Name. Not used.
+     * @param dataAdapter A Data Adapter name. Not used.
      * @return The maximum frequency to be allowed by the prefilter,
      * as supplied in the Metadata Adapter configuration.
      */
+    @Override
+    public double getMinSourceFrequency(String item, String dataAdapter) {
+        return getMinSourceFrequency(item);
+    }
+
+    /**
+     * Reduced, backward-compatibility version of the Prefilter frequency
+     * configuration method.
+     * 
+     * @param item An Item Name. Not used.
+     * @return The maximum frequency to be allowed by the prefilter,
+     * as supplied in the Metadata Adapter configuration.
+     * 
+     * @see #getMinSourceFrequency(String, String)
+     */
+    @Override
     public double getMinSourceFrequency(String item) {
         return prefilterFrequency;
     }
@@ -509,13 +662,35 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
     /**
      * Returns the maximum allowed length for a Snapshot of any Item that
      * has been requested with publishing Mode DISTINCT.
+     * The operation is deferred to a reduced version of the method,
+     * where the dataAdapter argument is discarded. This also ensures
+     * backward compatibility with old adapter classes derived from this one.
      *
-     * @param item An Item Name.
+     * @param item An Item Name. Not used.
+     * @param dataAdapter A Data Adapter name. Not used.
      * @return The maximum allowed length for the Snapshot, as supplied
      * in the Metadata Adapter configuration. In case no value has been
      * supplied, a default value of 10 events is returned, which is thought
      * to be enough to satisfy typical Client requests.
      */
+    @Override
+    public int getDistinctSnapshotLength(String item, String dataAdapter) {
+        return getDistinctSnapshotLength(item);
+    }
+
+    /**
+     * Reduced, backward-compatibility version of the Snapshot length
+     * configuration method.
+     *
+     * @param item An Item Name. Not used.
+     * @return The maximum allowed length for the Snapshot, as supplied
+     * in the Metadata Adapter configuration. In case no value has been
+     * supplied, a default value of 10 events is returned, which is thought
+     * to be enough to satisfy typical Client requests.
+     * 
+     * @see #getDistinctSnapshotLength(String, String)
+     */
+    @Override
     public int getDistinctSnapshotLength(String item) {
         return distinctSnapshotLength;
     }
@@ -523,6 +698,32 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
     /**
      * Called by Lightstreamer Kernel to ask for the allowance of a publishing
      * Mode for an Item.
+     * The operation is deferred to a reduced version of the method,
+     * where the dataAdapter argument is discarded. This also ensures
+     * backward compatibility with old adapter classes derived from this one.
+     *
+     * @param item An Item name.
+     * @param dataAdapter A Data Adapter name. Not used.
+     * @param mode A publishing Mode.
+     * @return true or false, based on a sequence of rules of the general
+     * form &lt;pattern,allowed_modes&gt; supplied in the Adapter
+     * configuration.
+     * If no pattern matches the Item name, then false is returned; otherwise,
+     * the first matching pattern is considered and true is returned only if
+     * the related allowed_modes contain the specified Mode.
+     * However, if no rules are available at all, then true is always returned.
+     * In the latter case, as in any case of loose configuration, conflicting
+     * Modes may be both allowed for the same Item, so the Clients should
+     * ensure that the same Item cannot be requested in two conflicting Modes.
+     */
+    @Override
+    public boolean modeMayBeAllowed(String item, String dataAdapter, Mode mode) {
+        return modeMayBeAllowed(item, mode);
+    }
+
+    /**
+     * Reduced, backward-compatibility version of the publishing mode
+     * allowance method.
      *
      * @param item An Item name.
      * @param mode A publishing Mode.
@@ -536,7 +737,10 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * In the latter case, as in any case of loose configuration, conflicting
      * Modes may be both allowed for the same Item, so the Clients should
      * ensure that the same Item cannot be requested in two conflicting Modes.
+     * 
+     * @see #modeMayBeAllowed(String, String, Mode)
      */
+    @Override
     public boolean modeMayBeAllowed(String item, Mode mode) {
         if (families == null) {
             return true;

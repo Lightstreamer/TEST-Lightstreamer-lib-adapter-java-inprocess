@@ -23,8 +23,20 @@ import javax.annotation.Nullable;
 
 /**
  * Provides a default implementation of all the MetadataProvider interface
- * methods. Overriding this class may facilitate the coding of simple 
- * Metadata Adapters.
+ * methods, except for getItems and getSchema. Overriding this class
+ ° may facilitate the coding of simple Metadata Adapters.<BR>
+ * The class also provides implementations for old signature versions
+ * of some methods (in the form of overloads of the current version) and,
+ * by default, it forwards the implementations for the current signature
+ * versions to the old ones, which involves discarding some arguments.
+ * As a consequence, a custom Metadata Adapter inheriting from this class
+ * is allowed to stick to old signature versions for its own implementations,
+ * although the use of the current versions is recommended.
+ * However, the restrictions related to the {@link MetadataProvider}
+ * interface still hold: the custom part of the Adapter is only allowed
+ * to implement at most one version for each interface method, otherwise
+ * the Adapter can be refused (with the exception of notifyUser,
+ * which has two current overloaded versions).
  */
 public abstract class MetadataProviderAdapter implements MetadataProvider {
 
@@ -43,12 +55,12 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
     /**
      * Called by Lightstreamer Kernel as a preliminary check that a user is
      * enabled to make Requests to the related Data Providers.
-     * <BR>In this default implementation, a simpler 2-arguments version of
-     * the method is invoked, where the httpHeaders argument is discarded.
-     * This also ensures backward compatibility with old adapter classes
-     * derived from this one.
-     * <BR>Note that, for authentication purposes, only the user and password
+     * Note that, for authentication purposes, only the user and password
      * arguments should be consulted.
+     * <BR>In this default implementation, a reduced version of
+     * the method is invoked, where the httpHeaders argument is discarded.
+     * This also ensures backward compatibility with very old adapter classes
+     * derived from this one.
      *
      * @param user A User name.
      * @param password A password optionally required to validate the User.
@@ -57,6 +69,8 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * Not used.
      * @throws AccessException never thrown
      * @throws CreditsException never thrown
+     * 
+     * @see #notifyUser(String, String, Map, String)
      */
     public void notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders)
             throws AccessException, CreditsException {
@@ -64,16 +78,18 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
     }
 
     /**
-     * 2-arguments version of the User authentication method. In case the
-     * 3-arguments version of the method is not overridden, this version
-     * of the method is invoked.
-     * <BR>In this default implementation, the Metadata Adapter poses no
+     * Reduced, backward-compatibility version of the User authentication method.
+     * In case the standard 3-arguments version of the method is not overridden,
+     * this version of the method is invoked.
+     * In this default implementation, the Metadata Adapter poses no
      * restriction.
      *
      * @param  user  not used.
      * @param  password  not used.
      * @throws AccessException  never thrown.
      * @throws CreditsException  never thrown.
+     * 
+     * @see #notifyUser(String, String, Map)
      */
     public void notifyUser(@Nullable String user, @Nullable String password)
             throws AccessException, CreditsException {
@@ -82,13 +98,12 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
 
     /**
      * Extended version of the User authentication method, invoked by the
-     * Server in case it has been instructed (through the &lt;use_client_auth&gt;
-     * configuration flag) to acquire the client principal from the client TLS/SSL
-     * certificate, if available.
-     * <BR>In this default implementation, the base 3-arguments version of
-     * the method is invoked, where the clientPrincipal argument is discarded.
-     * This also ensures backward compatibility with old adapter classes
-     * derived from this one.
+     * Server instead of the standard 3-argument one in case it has been
+     * instructed (through the &lt;use_client_auth&gt; configuration flag)
+     * to acquire the client principal from the client TLS/SSL certificate,
+     * if available.
+     * <BR>In this default implementation, the standard version of the method
+     * is invoked, where the clientPrincipal argument is discarded.
      * <BR>
      * <B>Edition Note:</B>
      * <BR>https is an optional feature, available
@@ -128,13 +143,34 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
     /**
      * Called by Lightstreamer Kernel to ask for the ItemUpdate frequency
      * to be allowed to a User for a specific Item.
+     * In this default implementation, a reduced version of the method
+     * is invoked, where the dataAdapter argument is discarded.
+     * This also ensures backward compatibility with old adapter classes
+     * derived from this one.
+     *
+     * @param  user  not used.
+     * @param  item  not used.
+     * @param  dataAdapter  not used.
+     * @return always zero, to mean no frequency limit.
+     */
+    public double getAllowedMaxItemFrequency(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter) {
+        return getAllowedMaxItemFrequency(user, item);
+    }
+
+    /**
+     * Reduced, backward-compatibility version of the ItemUpdate frequency
+     * authorization method.
+     * In case the standard version of the method is not overridden,
+     * this version of the method is invoked.
      * In this default implementation, the Metadata Adapter poses no
      * restriction; this also enables unfiltered dispatching for Items
-     * subscribed in MERGE or DISTINCT mode.
+     * that support it.
      *
      * @param  user  not used.
      * @param  item  not used.
      * @return always zero, to mean no frequency limit.
+     * 
+     * @see #getAllowedMaxItemFrequency(String, String, String)
      */
     public double getAllowedMaxItemFrequency(@Nullable String user, @Nonnull String item) {
         return 0.0;
@@ -144,12 +180,33 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * Called by Lightstreamer Kernel to ask for the maximum allowed size
      * of the buffer internally used to enqueue subsequent ItemUpdates
      * for the same Item.
+     * In this default implementation, a reduced version of the method
+     * is invoked, where the dataAdapter argument is discarded.
+     * This also ensures backward compatibility with old adapter classes
+     * derived from this one.
+     *
+     * @param  user  not used.
+     * @param  item  not used.
+     * @param  dataAdapter  not used.
+     * @return always zero, to mean no size limit.
+     */
+    public int getAllowedBufferSize(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter) {
+        return getAllowedBufferSize(user, item);
+    }
+
+    /**
+     * Reduced, backward-compatibility version of the buffer size
+     * authorization method.
+     * In case the standard version of the method is not overridden,
+     * this version of the method is invoked.
      * In this default implementation, the Metadata Adapter poses no
      * restriction.
      *
      * @param  user  not used.
      * @param  item  not used.
      * @return always zero, to mean no size limit.
+     * 
+     * @see #getAllowedBufferSize(String, String, String)
      */
     public int getAllowedBufferSize(@Nullable String user, @Nonnull String item) {
         return 0;
@@ -159,6 +216,26 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * Called by Lightstreamer Kernel to ask for the allowance of a publishing
      * Mode for an Item. A publishing Mode can or cannot be allowed depending
      * on the User.
+     * In this default implementation, a reduced version of the method
+     * is invoked, where the dataAdapter argument is discarded.
+     * This also ensures backward compatibility with old adapter classes
+     * derived from this one.
+     *
+     * @param  user  not used.
+     * @param  item  not used.
+     * @param  dataAdapter  not used.
+     * @param  mode  not used.
+     * @return always true.
+     */
+    public boolean isModeAllowed(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter, @Nonnull Mode mode) {
+        return isModeAllowed(user, item, mode);
+    }
+
+    /**
+     * Reduced, backward-compatibility version of the publishing Mode
+     * authorization method.
+     * In case the standard version of the method is not overridden,
+     * this version of the method is invoked.
      * In this default implementation, the Metadata Adapter poses no
      * restriction. As a consequence, conflicting Modes may be both allowed
      * for the same Item, so the Clients should ensure that the same Item
@@ -168,6 +245,8 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * @param  item  not used.
      * @param  mode  not used.
      * @return always true.
+     * 
+     * @see #isModeAllowed(String, String, String, Mode)
      */
     public boolean isModeAllowed(@Nullable String user, @Nonnull String item, @Nonnull Mode mode) {
         return true;
@@ -176,6 +255,25 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
     /**
      * Called by Lightstreamer Kernel to ask for the allowance of a publishing
      * Mode for an Item (for at least one User).
+     * In this default implementation, a reduced version of the method
+     * is invoked, where the dataAdapter argument is discarded.
+     * This also ensures backward compatibility with old adapter classes
+     * derived from this one.
+     *
+     * @param  item  not used.
+     * @param  dataAdapter  not used.
+     * @param  mode  not used.
+     * @return always true.
+     */
+    public boolean modeMayBeAllowed(@Nonnull String item, @Nonnull String dataAdapter, @Nonnull Mode mode) {
+        return modeMayBeAllowed(item, mode);
+    }
+
+    /**
+     * Reduced, backward-compatibility version of the publishing Mode
+     * allowance method.
+     * In case the standard version of the method is not overridden,
+     * this version of the method is invoked.
      * In this default implementation, the Metadata Adapter poses no
      * restriction. As a consequence, conflicting Modes may be both allowed
      * for the same Item, so the Clients should ensure that the same Item
@@ -188,6 +286,8 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * @param  item  not used.
      * @param  mode  not used.
      * @return always true.
+     * 
+     * @see #modeMayBeAllowed(String, String, Mode)
      */
     public boolean modeMayBeAllowed(@Nonnull String item, @Nonnull Mode mode) {
         return true;
@@ -197,12 +297,33 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * Called by Lightstreamer Kernel to ask for the allowance of a Selector
      * for an Item. Typically, a Selector is intended for one Item or for
      * a specific set of Items with some characteristics.
+     * In this default implementation, a reduced version of the method
+     * is invoked, where the dataAdapter argument is discarded.
+     * This also ensures backward compatibility with old adapter classes
+     * derived from this one.
+     *
+     * @param user not used.
+     * @param item not used.
+     * @param dataAdapter not used.
+     * @param selector not used.
+     * @return always true, to mean that the Selector is allowed.
+     */
+    public boolean isSelectorAllowed(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter, @Nonnull String selector) {
+        return isSelectorAllowed(user, item, selector);
+    }
+
+    /**
+     * Reduced, backward-compatibility version of the Selector authorization method.
+     * In case the standard version of the method is not overridden,
+     * this version of the method is invoked.
      * In this default implementation, selectors are always allowed.
      *
      * @param user not used.
      * @param item not used.
      * @param selector not used.
      * @return always true, to mean that the Selector is allowed.
+     * 
+     * @see #isSelectorAllowed(String, String, String)
      */
     public boolean isSelectorAllowed(@Nullable String user, @Nonnull String item, @Nonnull String selector) {
         return true;
@@ -214,6 +335,27 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * (i&#46;e&#46;: Subscription) with an associated Selector.
      * If the return value is true, the event is dispatched to the
      * ItemEventBuffer; otherwise, it is filtered out.
+     * In this default implementation, a reduced version of the method
+     * is invoked, where the dataAdapter argument is discarded.
+     * This also ensures backward compatibility with old adapter classes
+     * derived from this one.
+     *
+     * @param user not used.
+     * @param item not used.
+     * @param dataAdapter not used.
+     * @param selector not used.
+     * @param event not used.
+     * @return always true, to mean that the event is to be processed
+     * by the ItemEventBuffer.
+     */
+    public boolean isSelected(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter, @Nonnull String selector, @Nonnull ItemEvent event) {
+        return isSelected(user, item, selector, event);
+    }
+
+    /**
+     * Reduced, backward-compatibility version of the Selector implementation method.
+     * In case the standard version of the method is not overridden,
+     * this version of the method is invoked.
      * In this default implementation, no event is filtered out, regardless
      * of the Selector.
      *
@@ -223,6 +365,8 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * @param event not used.
      * @return always true, to mean that the event is to be processed
      * by the ItemEventBuffer.
+     * 
+     * @see #isSelected(String, String, String, String, ItemEvent)
      */
     public boolean isSelected(@Nullable String user, @Nonnull String item, @Nonnull String selector, @Nonnull ItemEvent event) {
         return true;
@@ -232,12 +376,33 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * Called by Lightstreamer Kernel to know whether the Metadata Adapter
      * must or must not be given a chance to modify the values carried by the
      * updates for a supplied Item in a push Session owned by a supplied User.
+     * In this default implementation, a reduced version of the method
+     * is invoked, where the dataAdapter argument is discarded.
+     * This also ensures backward compatibility with old adapter classes
+     * derived from this one.
+     *
+     * @param user not used.
+     * @param item not used.
+     * @param dataAdapter not used.
+     * @return always false, to mean that the Kernel should never ask for
+     * update values modifications.
+     */
+    public boolean enableUpdateCustomization(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter) {
+        return enableUpdateCustomization(user, item);
+    }
+    
+    /**
+     * Reduced, backward-compatibility version of the Customizer authorization method.
+     * In case the standard version of the method is not overridden,
+     * this version of the method is invoked.
      * In this default implementation, updates are never to be modified.
      *
      * @param user not used.
      * @param item not used.
      * @return always false, to mean that the Kernel should never ask for
      * update values modifications.
+     * 
+     * @see #enableUpdateCustomization(String, String, String)
      */
     public boolean enableUpdateCustomization(@Nullable String user, @Nonnull String item) {
         return false;
@@ -247,11 +412,31 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * Called by Lightstreamer Kernel in order to customize events pertaining
      * to an ItemEventBuffer, if such customization has been requested
      * through the enableUpdateCustomization method.
+     * In this default implementation, a reduced version of the method
+     * is invoked, where the dataAdapter argument is discarded.
+     * This also ensures backward compatibility with old adapter classes
+     * derived from this one.
+     *
+     * @param user not used.
+     * @param item not used.
+     * @param dataAdapter not used.
+     * @param event not used.
+     */
+    public void customizeUpdate(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter, @Nonnull CustomizableItemEvent event) {
+        customizeUpdate(user, item, event);
+    }
+
+    /**
+     * Reduced, backward-compatibility version of the Customizer implementation method.
+     * In case the standard version of the method is not overridden,
+     * this version of the method is invoked.
      * In this default implementation, updates are never modified.
      *
      * @param user not used.
      * @param item not used.
      * @param event not used.
+     * 
+     * @see #customizeUpdate(String, String, String, CustomizableItemEvent)
      */
     public void customizeUpdate(@Nullable String user, @Nonnull String item, @Nonnull CustomizableItemEvent event) {
         // legal empty block
@@ -266,13 +451,34 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * to the specified frequency, before feeding the ItemEventBuffers.
      * Such prefiltering applies only for Items requested with publishing Mode
      * MERGE or DISTINCT.
+     * <BR>In this default implementation, a reduced version of the method
+     * is invoked, where the dataAdapter argument is discarded.
+     * This also ensures backward compatibility with old adapter classes
+     * derived from this one.
+     *
+     * @param  item  not used.
+     * @param  dataAdapter  not used.
+     * @return always zero, to mean that incoming ItemEvents must not be
+     * prefiltered.
+     */
+    public double getMinSourceFrequency(@Nonnull String item, @Nonnull String dataAdapter) {
+        return getMinSourceFrequency(item);
+    }
+
+    /**
+     * Reduced, backward-compatibility version of the Prefilter frequency
+     * configuration method.
+     * In case the standard version of the method is not overridden,
+     * this version of the method is invoked.
      * In this default implementation, the Metadata Adapter can't set any
      * minimum frequency; this also enables unfiltered dispatching for Items
-     * subscribed in MERGE or DISTINCT mode.
+     * that support it.
      *
      * @param  item  not used.
      * @return always zero, to mean that incoming ItemEvents must not be
      * prefiltered.
+     * 
+     * @see #getMinSourceFrequency(String, String)
      */
     public double getMinSourceFrequency(@Nonnull String item) {
         return 0.0;
@@ -282,12 +488,33 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * Called by Lightstreamer Kernel to ask for the maximum allowed length
      * for a Snapshot of an Item that has been requested with publishing Mode
      * DISTINCT.
+     * In this default implementation, a reduced version of the method
+     * is invoked, where the dataAdapter argument is discarded.
+     * This also ensures backward compatibility with old adapter classes
+     * derived from this one.
+     *
+     * @param item  not used.
+     * @param dataAdapter  not used.
+     * @return a value of 0, to mean that no events will be kept in order to
+     * satisfy snapshot requests.
+     */
+    public int getDistinctSnapshotLength(@Nonnull String item, @Nonnull String dataAdapter) {
+        return getDistinctSnapshotLength(item);
+    }
+
+    /**
+     * Reduced, backward-compatibility version of the Snapshot length
+     * configuration method.
+     * In case the standard version of the method is not overridden,
+     * this version of the method is invoked.
      * In this default implementation, 0 events are specified, so snapshot
      * will not be managed.
      *
-     * @param item An Item Name.
+     * @param item  not used.
      * @return a value of 0, to mean that no events will be kept in order to
      * satisfy snapshot requests.
+     * 
+     * @see #getDistinctSnapshotLength(String, String)
      */
     public int getDistinctSnapshotLength(@Nonnull String item) {
         return 0;
@@ -312,9 +539,9 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
     /**
      * Called by Lightstreamer Kernel to check that a User is enabled to open
      * a new push Session.
-     * <BR>In this default implementation, a simpler 2-arguments version of
-     * the method is invoked, where the clientContext argument is discarded.
-     * This also ensures backward compatibility with old adapter classes
+     * In this default implementation, a reduced version of the method
+     * is invoked, where the clientContext argument is discarded.
+     * This also ensures backward compatibility with very old adapter classes
      * derived from this one.
      *
      * @param user A User name.
@@ -329,16 +556,18 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
     }
 
     /**
-     * 2-arguments version of the User authentication method. In case the
-     * 3-arguments version of the method is not overridden, this version
-     * of the method is invoked.
-     * <BR>In this default implementation, the Metadata Adapter poses no
+     * Reduced, backward-compatibility version of the Session authorization method.
+     * In case the standard version of the method is not overridden,
+     * this version of the method is invoked.
+     * In this default implementation, the Metadata Adapter poses no
      * restriction.
      *
      * @param user not used.
      * @param sessionID not used.
      * @throws CreditsException never thrown.
      * @throws NotificationException never thrown.
+     * 
+     * @see #notifyNewSession(String, String, Map)
      */
     public void notifyNewSession(@Nullable String user, @Nonnull String sessionID)
             throws CreditsException, NotificationException {
