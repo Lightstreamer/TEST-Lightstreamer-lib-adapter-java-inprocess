@@ -22,14 +22,15 @@ This restriction is generalized as a fully-fledged interface contract extension 
 **COMPATIBILITY NOTE:** *When porting Adapter source code, the old versions of the modified methods cannot be left, or cannot be declared as public.*<br/>
 **COMPATIBILITY NOTE:** *Existing Adapter binaries built with the previous library version and which happen to include a public overload that matches one of the new methods will not be supported.*
 
-- Introduced the declareFieldDiffOrder and smartDeclareFieldDiffOrder methods in the ItemEventListener class.
+- Introduced the declareFieldDiffOrder and smartDeclareFieldDiffOrder methods in the ItemEventListener interface.
 Together with the new DiffAlgorithm class, they allow a Data Adapter to specify which algorithms, and in which order,
 the Server should try, in order to compute the difference between a value and the previous one in order to send the client
 this difference, for "delta delivery" purpose.<br/>
+**COMPATIBILITY NOTE:** *Invoking the new method is optional and by default no algorithm is tried by the Server; hence there are no backward compatibility issues.*<br/>
+**COMPATIBILITY NOTE:** *Adapter source code is not expected to implement the ItemEventListener interface, hence no source compatibility issues are expected, unless the Adapter uses this interface for its own purposes.*<br/>
 Currently, the following options are available:
 	- JSON Patch, which the Server can use when the involved values are valid JSON representations.
 	- Google's "diff-match-patch" algorithm (the result is then serialized with the custom "TLCP-diff" format).<br/>
-**COMPATIBILITY NOTE:** *Invoking the new method is optional and by default no algorithm is tried by the Server; hence there are no backward compatibility issues.*
 
 
 ## [7.3.1] (08-04-2022)
