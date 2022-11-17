@@ -53,6 +53,7 @@ import com.lightstreamer.interfaces.metadata.SchemaException;
  * according with values that can be supplied together with adapter
  * configuration, inside the "metadata_provider" element that defines the
  * Adapter. <BR>
+ * 
  * The return of the getAllowedMaxBandwidth method can be supplied in a
  * "max_bandwidth" parameter; the return of the getAllowedMaxItemFrequency
  * method can be supplied in a "max_frequency" parameter; the return of the
@@ -62,6 +63,7 @@ import com.lightstreamer.interfaces.metadata.SchemaException;
  * getMinSourceFrequency method can be supplied in a "prefilter_frequency"
  * parameter. All resource limits not supplied are granted as unlimited,
  * but for distinct_snapshot_length, which defaults as 10. <BR>
+ * 
  * The return of the modeMayBeAllowed method (i.e. the association of the
  * proper publishing Mode to each Item) can be configured by supplying a list
  * of rules, which define Item families, where all Items in each family share
@@ -70,19 +72,24 @@ import com.lightstreamer.interfaces.metadata.SchemaException;
  * is supported by the Server for each Item; only the RAW mode is supported
  * without restrictions).
  * Each family is specified by providing a pattern upon which all names
- * of the Items in the family need to match.
- * The description of each family can be supplied with a pair of parameters,
- * named "item_family_&lt;n&gt;" and "modes_for_item_family_&lt;n&gt;",
+ * of the Items in the family need to match and, optionally, the involved
+ * Data Adapter.
+ * The description of each family can be supplied with a group of parameters,
+ * named "item_family_&lt;n&gt;", "modes_for_item_family_&lt;n&gt;", and
+ * "data_adapter_for_item_family_&lt;n&gt;"
  * where &lt;n&gt; is a progressive number, unique for each family.
- * The former parameter specifies the pattern, in java.util.regex.Pattern
- * format, while the latter one specifies the allowed modes, as a list of
- * names, with commas and spaces as allowed separators.
- * In case more than one of the supplied patterns match an Item name, the
- * Item is assigned to the family with the smallest progressive.
+ * The first parameter specifies the pattern, in java.util.regex.Pattern
+ * format, while the second one specifies the allowed modes, as a list of
+ * names, with commas and spaces as allowed separators. The third parameter
+ * is optional and specifies the Data Adapter; if missing, the rule applies
+ * regardless of the Data Adapter.
+ * In case more than one rule applies, the one with the smallest progressive
+ * is considered and the Item is assigned only to that family.
  * Items that do not belong to any family are not allowed in any Mode;
  * however, if no families are defined at all, then all Items are allowed
  * in all Modes and the Clients should ensure that the same Item cannot be
  * requested in two conflicting Modes. <BR>
+ * 
  * There are no access restrictions, but an optional User name check is
  * performed if a comma separated list of User names is supplied in an
  * "allowed_users" parameter. <BR>
@@ -175,11 +182,13 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
     private int distinctSnapshotLength;
 
     private static class ItemFamily {
+        private String dataAdapter;
         private Pattern pattern;
         private Set allowedModes;
 
-        private ItemFamily(Pattern pattern, Set modes) {
+        private ItemFamily(String dataAdapter, Pattern pattern, Set modes) {
             allowedModes = modes;
+            this.dataAdapter = dataAdapter;
             this.pattern = pattern;
         }
     }
@@ -284,6 +293,7 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
 
             if (rules > 0) {
                 final String modesPrefix = "modes_for_item_family_";
+                final String dataAdapterPrefix = "data_adapter_for_item_family_";
                 families = new ItemFamily[rules];
                 int rule = 0;
                 for (int currFamily = 1; currFamily <= lastFamily; currFamily++) {
@@ -303,7 +313,12 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
                             String strMode = tokenizer.nextToken();
                             modes.add(toMode(strMode));
                         }
-                        families[rule] = new ItemFamily(pattern, modes);
+
+                        currParam = dataAdapterPrefix + currFamily;
+                        String dataAdapter = (String) params.get(currParam);
+                            // can be null, i.e. missing
+
+                        families[rule] = new ItemFamily(dataAdapter, pattern, modes);
                         rule++;
                     }
                 }
@@ -698,18 +713,18 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
     /**
      * Called by Lightstreamer Kernel to ask for the allowance of a publishing
      * Mode for an Item.
-     * The operation is deferred to a reduced version of the method,
-     * where the dataAdapter argument is discarded. This also ensures
+     * The operation is first deferred to a reduced version of the method,
+     * where the dataAdapter argument is discarded. This ensures
      * backward compatibility with old adapter classes derived from this one.
      *
      * @param item An Item name.
-     * @param dataAdapter A Data Adapter name. Not used.
+     * @param dataAdapter A Data Adapter name.
      * @param mode A publishing Mode.
      * @return true or false, based on a sequence of rules of the general
-     * form &lt;pattern,allowed_modes&gt; supplied in the Adapter
+     * form &lt;pattern,data_adapter,allowed_modes&gt; supplied in the Adapter
      * configuration.
-     * If no pattern matches the Item name, then false is returned; otherwise,
-     * the first matching pattern is considered and true is returned only if
+     * If no rule matches the Item name and the Data Adapter, then false is returned;
+     * otherwise, the first matching rule is considered and true is returned only if
      * the related allowed_modes contain the specified Mode.
      * However, if no rules are available at all, then true is always returned.
      * In the latter case, as in any case of loose configuration, conflicting
@@ -718,37 +733,46 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      */
     @Override
     public boolean modeMayBeAllowed(String item, String dataAdapter, Mode mode) {
-        return modeMayBeAllowed(item, mode);
+        try {
+            return modeMayBeAllowed(item, mode);
+        } catch (RuntimeException e) {
+            if (e == myNotImplementedException) {
+                return checkItemMode(item, dataAdapter, mode);
+            } else {
+                throw e;
+            }
+        }
     }
 
     /**
      * Reduced, backward-compatibility version of the publishing mode
-     * allowance method.
+     * allowance method. This version is left to support overriding by old
+     * adapter classes derived from this one. If not overridden, the method
+     * delegates back to the standard version.
      *
      * @param item An Item name.
      * @param mode A publishing Mode.
-     * @return true or false, based on a sequence of rules of the general
-     * form &lt;pattern,allowed_modes&gt; supplied in the Adapter
-     * configuration.
-     * If no pattern matches the Item name, then false is returned; otherwise,
-     * the first matching pattern is considered and true is returned only if
-     * the related allowed_modes contain the specified Mode.
-     * However, if no rules are available at all, then true is always returned.
-     * In the latter case, as in any case of loose configuration, conflicting
-     * Modes may be both allowed for the same Item, so the Clients should
-     * ensure that the same Item cannot be requested in two conflicting Modes.
+     * @return true or false only if overridden, otherwise throws.
      * 
      * @see #modeMayBeAllowed(String, String, Mode)
      */
     @Override
     public boolean modeMayBeAllowed(String item, Mode mode) {
+        throw myNotImplementedException;
+    }
+    
+    private final RuntimeException myNotImplementedException = new RuntimeException();
+
+    private boolean checkItemMode(String item, String dataAdapter, Mode mode) {
         if (families == null) {
             return true;
         }
         for (int i = 0; i < families.length; i++) {
-            Matcher matcher = families[i].pattern.matcher(item);
-            if (matcher.matches()) {
-                return families[i].allowedModes.contains(mode);
+            if (families[i].dataAdapter == null || families[i].dataAdapter.equals(dataAdapter)) {
+                Matcher matcher = families[i].pattern.matcher(item);
+                if (matcher.matches()) {
+                    return families[i].allowedModes.contains(mode);
+                }
             }
         }
         return false;
