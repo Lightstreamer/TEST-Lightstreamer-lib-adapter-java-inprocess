@@ -1,6 +1,20 @@
 # Lightstreamer Changelog - SDK for Java In-Process Adapters
 
 
+## [7.4.1] (18-11-2022)
+
+*Compatible with Lightstreamer Server since 7.3.*  
+*May not be compatible with code developed with the previous version; see compatibility notes below.*  
+
+**Improvements**
+
+- Extended the LiteralBasedProvider implementation to take advantage of the request's Data Adapter information, supplied since 7.4.0, in modeMayBeAllowed.
+Now, new parameters in adapters.xml of the form data_adapter_for_item_family_xxx are supported to refine the definition of the various "item families".
+The 2-argument version of modeMayBeAllowed, which is left for backward compatibilty, now throws an exception.
+**COMPATIBILITY NOTE:** *Old Adapters inheriting from LiteralBasedProvider and implementing the old 2-argument version of modeMayBeAllowed will still override the basic implementation.*<br/>
+*However, they can no longer refer to the "super" implementation of the 2-argument version.*<br/>
+
+
 ## [7.4.0] (19-09-2022)
 
 *Compatible with Lightstreamer Server since 7.3.*  
