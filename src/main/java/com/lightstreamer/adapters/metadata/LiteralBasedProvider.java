@@ -75,14 +75,14 @@ import com.lightstreamer.interfaces.metadata.SchemaException;
  * of the Items in the family need to match and, optionally, the involved
  * Data Adapter.
  * The description of each family can be supplied with a group of parameters,
- * named "item_family_&lt;n&gt;", "modes_for_item_family_&lt;n&gt;", and
- * "data_adapter_for_item_family_&lt;n&gt;"
+ * named "item_family_&lt;n&gt;", "data_adapter_for_item_family_&lt;n&gt;",
+ * and "modes_for_item_family_&lt;n&gt;",
  * where &lt;n&gt; is a progressive number, unique for each family.
  * The first parameter specifies the pattern, in java.util.regex.Pattern
- * format, while the second one specifies the allowed modes, as a list of
- * names, with commas and spaces as allowed separators. The third parameter
- * is optional and specifies the Data Adapter; if missing, the rule applies
- * regardless of the Data Adapter.
+ * format, while the second one is optional and specifies the Data Adapter
+ * (if missing, the rule applies regardless of the Data Adapter).
+ * The third parameter specifies the allowed modes for this family,
+ * as a list of names, with commas and spaces as allowed separators.
  * In case more than one rule applies, the one with the smallest progressive
  * is considered and the Item is assigned only to that family.
  * Items that do not belong to any family are not allowed in any Mode;
@@ -131,11 +131,14 @@ import com.lightstreamer.interfaces.metadata.SchemaException;
          Define how the modeMayBeAllowed method should behave, by
          associating to each item the modes in which it can be managed
          by the Server.
-         Each pair of parameters of the form "item_family_<n>" and
+         Each triple of parameters of the form "item_family_<n>",
+         "data_adapter_for_item_family_<n> (optional), and
          "modes_for_item_family_<n>" define respectively the item name
-         pattern (in java.util.regex.Pattern format) and the allowed
+         pattern (in java.util.regex.Pattern format),
+         the related Data Adapter, and the allowed
          modes (in comma separated format) for a family of items.
-         Each item is assigned to the first family that matches its name.
+         Each item is assigned to the first family that matches its name
+         and (if supplied) the related Data Adapter.
          If no families are specified at all, then modeMayBeAllowed
          always returns true, though this is not recommended, because
          the Server does not support more than one mode out of MERGE,
@@ -145,6 +148,7 @@ import com.lightstreamer.interfaces.metadata.SchemaException;
          the Clients to ensure that the same item cannot be requested in
          two conflicting Modes. -->
     <param name="item_family_1">item.*</param>
+    <param name="data_adapter_for_item_family_1">MyDataAdapter</param>
     <param name="modes_for_item_family_1">MERGE</param>
     <!--
     <param name="item_family_2">portfolio.*</param>
@@ -160,7 +164,9 @@ import com.lightstreamer.interfaces.metadata.SchemaException;
  * also provides implementations for old signature versions
  * of some methods (in the form of overloads of the current version)
  * and it forwards the implementations for the current signature
- * versions to the old ones, which involves discarding some arguments.
+ * versions to the old ones, which involves discarding some arguments
+ * (with the exception of modeMayBeAllowed, which behaves in a slightly
+ * different way).
  * As a consequence, a custom Metadata Adapter inheriting from this class
  * is allowed to stick to old signature versions for its own implementations,
  * although the use of the current versions is recommended.
@@ -168,7 +174,7 @@ import com.lightstreamer.interfaces.metadata.SchemaException;
  * {@link com.lightstreamer.interfaces.metadata.MetadataProvider}
  * interface still hold: the custom part of the Adapter is only allowed
  * to implement at most one version for each interface method, otherwise
- * the Adapter can be refused (with the exception of notifyUser,
+ * the Adapter can be refused (the exception, here, is notifyUser,
  * which has two current overloaded versions).
  */
 public class LiteralBasedProvider extends MetadataProviderAdapter {
