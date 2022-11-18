@@ -10,7 +10,7 @@
 
 - Extended the LiteralBasedProvider implementation to take advantage of the request's Data Adapter information, supplied since 7.4.0, in modeMayBeAllowed.
 Now, new parameters in adapters.xml of the form data_adapter_for_item_family_xxx are supported to refine the definition of the various "item families".
-The 2-argument version of modeMayBeAllowed, which is left for backward compatibilty, now throws an exception.
+The 2-argument version of modeMayBeAllowed, which is left for backward compatibilty, now throws an exception.<br/>
 **COMPATIBILITY NOTE:** *Old Adapters inheriting from LiteralBasedProvider and implementing the old 2-argument version of modeMayBeAllowed will still override the basic implementation.*<br/>
 *However, they can no longer refer to the "super" implementation of the 2-argument version.*<br/>
 
