@@ -27,7 +27,7 @@ Since the API is available from the Maven Central Repository, to setup your deve
 <dependency>
     <groupId>com.lightstreamer</groupId>
     <artifactId>ls-adapter-inprocess</artifactId>
-    <version>7.4.0</version>
+    <version>7.4.1</version>
 </dependency>
 ```
 
@@ -35,7 +35,7 @@ Since the API is available from the Maven Central Repository, to setup your deve
 
 This project includes a simple full implementation of Metadata Adapter in Java, <b>LiteralBasedProvider</b>, made available as sample for inspiration and/or extension.
 
-The [LiteralBasedProvider](https://github.com/Lightstreamer/Lightstreamer-lib-adapter-java-inprocess/tree/master/src/main/java/com/lightstreamer/adapters/metadata) extends the [MetadataProviderAdapter](https://lightstreamer.com/api/ls-adapter-inprocess/7.4.0/com/lightstreamer/interfaces/metadata/MetadataProviderAdapter.html) abstract class (which in turn implements the MetadataProvider interface). It is used in many Lightstreamer examples and demos, in combination with different Data Adapters and Clients.
+The [LiteralBasedProvider](https://github.com/Lightstreamer/Lightstreamer-lib-adapter-java-inprocess/tree/master/src/main/java/com/lightstreamer/adapters/metadata) extends the [MetadataProviderAdapter](https://lightstreamer.com/api/ls-adapter-inprocess/7.4.1/com/lightstreamer/interfaces/metadata/MetadataProviderAdapter.html) abstract class (which in turn implements the MetadataProvider interface). It is used in many Lightstreamer examples and demos, in combination with different Data Adapters and Clients.
 It is also useful when developing proof of concepts and prototypes, where the main focus is on the Data Adapter.
 
 #### Configure the LiteralBasedProvider Metadata Adapter
@@ -70,11 +70,14 @@ The following code snippet shows an example of `adapters.xml` configuration of t
              Define how the modeMayBeAllowed method should behave, by
              associating to each item the modes in which it can be managed
              by the Server.
-             Each pair of parameters of the form "item_family_<n>" and
+             Each triple of parameters of the form "item_family_<n>",
+             "data_adapter_for_item_family_<n> (optional), and
              "modes_for_item_family_<n>" define respectively the item name
-             pattern (in java.util.regex.Pattern format) and the allowed
+             pattern (in java.util.regex.Pattern format),
+             the related Data Adapter, and the allowed
              modes (in comma separated format) for a family of items.
-             Each item is assigned to the first family that matches its name.
+             Each item is assigned to the first family that matches its name
+             and (if supplied) the related Data Adapter.
              If no families are specified at all, then modeMayBeAllowed
              always returns true, though this is not recommended, because
              the Server does not support more than one mode out of MERGE,
@@ -85,6 +88,7 @@ The following code snippet shows an example of `adapters.xml` configuration of t
              two conflicting Modes.
              See LiteralBasedProvider javadoc. -->
     <param name="item_family_1">item.*</param>
+    <param name="data_adapter_for_item_family_1">MyDataAdapter</param>
     <param name="modes_for_item_family_1">MERGE</param>
     <!--
     <param name="item_family_2">item.*</param>
@@ -116,7 +120,7 @@ Assuming Maven is installed and available in your path you can build the library
 
 - [Examples](https://demos.lightstreamer.com/?p=lightstreamer&t=adapter&a=javaadapter)
 
-- [API Reference](https://lightstreamer.com/api/ls-adapter-inprocess/7.4.0/)
+- [API Reference](https://lightstreamer.com/api/ls-adapter-inprocess/7.4.1/)
 
 ## Other GitHub projects using this library
 
