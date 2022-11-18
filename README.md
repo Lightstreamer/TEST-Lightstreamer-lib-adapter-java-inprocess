@@ -51,18 +51,6 @@ The following code snippet shows an example of `adapters.xml` configuration of t
     <!-- Optional. List of initialization parameters specific for the adapter. -->
 
     <!-- Optional (specific for adapters that inherit from
-             com.lightstreamer.adapters.metadata.FileBasedProvider).
-             search_dir: path of the directory containing all *.items and
-             *.schema files, relative to the config directory.
-             static: define whether to cache the files or refresh them any time
-             they are needed.
-             See the FileBasedProvider javadoc. -->
-     <!--
-    <param name="search_dir">.</param>
-    <param name="static">Y</param>
-     -->
-    <!-- Optional (specific for adapters that inherit from
-             com.lightstreamer.adapters.metadata.FileBasedProvider or
              com.lightstreamer.adapters.metadata.LiteralBasedProvider).
              Define values to be returned in getAllowedMaxBandwidth(),
              getAllowedMaxItemFrequency(), getAllowedBufferSize() and
@@ -78,7 +66,6 @@ The following code snippet shows an example of `adapters.xml` configuration of t
     <param name="allowed_users">user123,user456</param>
      -->
      <!-- Optional (specific for adapters that inherit from
-             com.lightstreamer.adapters.metadata.FileBasedProvider or
              com.lightstreamer.adapters.metadata.LiteralBasedProvider).
              Define how the modeMayBeAllowed method should behave, by
              associating to each item the modes in which it can be managed
