@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.concurrent.CompletionStage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -508,9 +509,10 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * @see #notifyUser(String, String, Map, String)
      */
     @Override
-    public void notifyUser(String user, String password, Map httpHeaders)
+    public CompletionStage<Void> notifyUser(String user, String password, Map httpHeaders)
             throws AccessException, CreditsException {
-    	notifyUser(user, password);
+        notifyUser(user, password);
+        return null;
     }
 
     /**
@@ -560,9 +562,9 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * @throws CreditsException never thrown.
      */
     @Override
-    public void notifyUser(String user, String password, Map httpHeaders,  String clientPrincipal)
+    public CompletionStage<Void> notifyUser(String user, String password, Map httpHeaders,  String clientPrincipal)
             throws AccessException, CreditsException {
-        notifyUser(user, password, httpHeaders);
+        return notifyUser(user, password, httpHeaders);
     }
 
     /**

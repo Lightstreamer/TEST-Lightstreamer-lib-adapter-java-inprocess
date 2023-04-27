@@ -17,6 +17,7 @@ package com.lightstreamer.interfaces.metadata;
 
 import java.io.File;
 import java.util.Map;
+import java.util.concurrent.CompletionStage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -155,7 +156,7 @@ public interface MetadataProvider {
      * 
      * @see #notifyUser(String, String, Map, String)
      */
-    public void notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders)
+    public CompletionStage<Void> notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders)
         throws AccessException, CreditsException;
     // Pertaining to AUTHENTICATION pool.
 
@@ -196,7 +197,7 @@ public interface MetadataProvider {
      * @throws CreditsException if the User is known but is not enabled to
      * make further Requests at the moment.
      */
-    public void notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders,  @Nonnull String clientPrincipal)
+    public CompletionStage<Void> notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders,  @Nonnull String clientPrincipal)
         throws AccessException, CreditsException;
     // Pertaining to AUTHENTICATION pool.
 
@@ -627,7 +628,7 @@ public interface MetadataProvider {
      * @throws NotificationException if something is wrong in the parameters,
      * such as a nonexistent Session ID.
      */
-    public void notifyUserMessage(@Nullable String user, @Nonnull String sessionID, @Nonnull String message)
+    public CompletionStage<Void> notifyUserMessage(@Nullable String user, @Nonnull String sessionID, @Nonnull String message)
         throws CreditsException, NotificationException;
     // Pertaining to MSG pool.
 
