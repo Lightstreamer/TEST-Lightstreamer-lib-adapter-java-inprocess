@@ -511,27 +511,10 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
     @Override
     public CompletionStage<Void> notifyUser(String user, String password, Map httpHeaders)
             throws AccessException, CreditsException {
-        notifyUser(user, password);
-        return null;
-    }
-
-    /**
-     * Reduced, backward-compatibility version of the User authentication method.
-     *
-     * @param user A User name.
-     * @param password An optional password. Not used.
-     * @throws AccessException if a list of User names has been configured
-     * and the supplied name does not belong to the list.
-     * @throws CreditsException never thrown.
-     * 
-     * @see #notifyUser(String, String, Map)
-     */
-    @Override
-    public void notifyUser(String user, String password)
-            throws AccessException, CreditsException {
         if (!checkUser(user)) {
             throw new AccessException("Unauthorized user");
         }
+        return null;
     }
 
     /**

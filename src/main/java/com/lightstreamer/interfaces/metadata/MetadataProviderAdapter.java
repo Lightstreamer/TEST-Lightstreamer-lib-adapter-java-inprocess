@@ -75,27 +75,7 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      */
     public CompletionStage<Void> notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders)
             throws AccessException, CreditsException {
-        notifyUser(user, password);
         return null;
-    }
-
-    /**
-     * Reduced, backward-compatibility version of the User authentication method.
-     * In case the standard 3-arguments version of the method is not overridden,
-     * this version of the method is invoked.
-     * In this default implementation, the Metadata Adapter poses no
-     * restriction.
-     *
-     * @param  user  not used.
-     * @param  password  not used.
-     * @throws AccessException  never thrown.
-     * @throws CreditsException  never thrown.
-     * 
-     * @see #notifyUser(String, String, Map)
-     */
-    public void notifyUser(@Nullable String user, @Nullable String password)
-            throws AccessException, CreditsException {
-        // legal empty block
     }
 
     /**
