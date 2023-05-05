@@ -58,16 +58,16 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * enabled to make Requests to the related Data Providers.
      * Note that, for authentication purposes, only the user and password
      * arguments should be consulted.
-     * <BR>In this default implementation, a reduced version of
-     * the method is invoked, where the httpHeaders argument is discarded.
-     * This also ensures backward compatibility with very old adapter classes
-     * derived from this one.
+     * <BR>In this default implementation, the Metadata Adapter poses no
+     * restriction. As the processing is successful and immediate,
+     * we don't need to return a CompletionStage, but can just return null. 
      *
      * @param user A User name.
      * @param password A password optionally required to validate the User.
      * @param httpHeaders A Map-type value object that contains a name-value
      * pair for each header found in the HTTP request that originated the call.
      * Not used.
+     * @return null, to notify an immediate success.
      * @throws AccessException never thrown
      * @throws CreditsException never thrown
      * 
@@ -101,8 +101,9 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * TLS/SSL certificate supplied on the socket connection used to issue the
      * request that originated the call; it can be null if client has not
      * authenticated itself or the authentication has failed. Not used.
-     * @throws AccessException never thrown
-     * @throws CreditsException never thrown
+     * @return a CompletionStage or null, demanded to the 3-arguments overload.
+     * @throws AccessException, demanded to the 3-arguments overload.
+     * @throws CreditsException, demanded to the 3-arguments overload.
      */
     public CompletionStage<Void> notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders,  @Nonnull String clientPrincipal)
             throws AccessException, CreditsException {
@@ -505,11 +506,13 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
     /**
      * Called by Lightstreamer Kernel to forward a message received by a User.
      * In this default implementation, the Metadata Adapter does never
-     * accept the message.
+     * accept the message. As the processing is immediate, we don't need
+     * to return a CompletionStage, but can just throw an exception.
      *
      * @param  user  not used.
      * @param  sessionID  not used.
      * @param  message  not used.
+     * @return never done.
      * @throws CreditsException  always thrown.
      * @throws NotificationException  never thrown.
      */

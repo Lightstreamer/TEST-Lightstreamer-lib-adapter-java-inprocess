@@ -126,17 +126,20 @@ public interface MetadataProvider {
      * discussion about the &lt;use_protected_js&gt; Server configuration
      * element, if available.
      * <BR>
-     * <BR>The method should perform as fast as possible. If the implementation
-     * is slow because of complex data gathering operations, it might delay the
-     * client session activation.
-     * In that case, configuring a dedicated "AUTHENTICATION" thread pool for
-     * authentication requests on this Adapter Set is recommended, in order not
-     * to block operations for different Adapter Sets or different operations
-     * for this Adapter Set.
-     * Also consider that a slow implementation may cause a "connection timeout"
+     * <BR>The method should perform fast and just return a CompletionStage.
+     * The real implementation should be done asynchronously and the outcome
+     * notified to the CompletionStage. Only in case of fast non-blocking
+     * processing, it is allowed to, instead, return the outcome
+     * (either null or an exception) directly.
+     * <BR>Even if the processing is asynchronous,
+     * the outcome should be provided as soon as possible.
+     * In fact, a slow implementation may cause a "connection timeout"
      * posed on the client side to expire, with a consequent new attempt;
      * it is advisable that the second invocation can take advantage of the
      * work already performed during the first invocation.
+     * <BR>The number of asynchronous invocations still pending can be
+     * limited through the configuration of the dedicated "AUTHENTICATION"
+     * thread pool, automatically created for this Adapter Set.
      *
      * @param user A User name.
      * @param password A password optionally required to validate the User.
@@ -146,13 +149,23 @@ public interface MetadataProvider {
      * For headers defined multiple times, a unique name-value pair is reported,
      * where the value is a concatenation of all the supplied header values,
      * separated by a ",".
+     * @return a CompletionStage that will be notified of the outcome (either
+     * successful or exceptional).
+     * <BR>Only if a successful outcome is determined immediately, it is
+     * possible to rather just return null.
      * @throws AccessException if the User name is not known or the supplied
      * password is not correct.
      * <BR>If the User credentials cannot be validated because of a temporary
      * lack of resources, then a {@link ResourceUnavailableException} can be
      * thrown. This will instruct the client to retry in short time.
+     * <BR>The exception can be thrown directly only if the case is detected
+     * immediately; otherwise a CompletionStage should be returned and the
+     * exception notified to it.
      * @throws CreditsException if the User is known but is not enabled to
      * make further Requests at the moment.
+     * <BR>The exception can be thrown directly only if the case is detected
+     * immediately; otherwise a CompletionStage should be returned and the
+     * exception notified to it.
      * 
      * @see #notifyUser(String, String, Map, String)
      */
@@ -189,13 +202,23 @@ public interface MetadataProvider {
      * TLS/SSL certificate supplied on the socket connection used to issue the
      * request that originated the call; it can be null if client has not
      * authenticated itself or the authentication has failed.
+     * @return a CompletionStage that will be notified of the outcome (either
+     * successful or exceptional).
+     * <BR>Only if a successful outcome is determined immediately, it is
+     * possible to rather just return null.
      * @throws AccessException if the User name is not known or the supplied
      * password is not correct.
      * <BR>If the User credentials cannot be validated because of a temporary
      * lack of resources, then a {@link ResourceUnavailableException} can be
      * thrown. This will instruct the client to retry in short time.
+     * <BR>The exception can be thrown directly only if the case is detected
+     * immediately; otherwise a CompletionStage should be returned and the
+     * exception notified to it.
      * @throws CreditsException if the User is known but is not enabled to
      * make further Requests at the moment.
+     * <BR>The exception can be thrown directly only if the case is detected
+     * immediately; otherwise a CompletionStage should be returned and the
+     * exception notified to it.
      */
     public CompletionStage<Void> notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders,  @Nonnull String clientPrincipal)
         throws AccessException, CreditsException;
@@ -613,20 +636,36 @@ public interface MetadataProvider {
      * The interpretation of the message is up to the Metadata Adapter.
      * A message can also be refused.
      * <BR>
-     * <BR>The method should perform fast and the message processing should
-     * be done asynchronously. If the implementation is slow, it might
-     * propagate the delay to other operations and other sessions.
-     * In that case, configuring a dedicated "MSG" thread pool for message
-     * management on the related Adapter Set is recommended, in order not
-     * to block other types of operations.
+     * <BR>The method should perform fast and just return a CompletionStage.
+     * The real implementation should be done asynchronously and the outcome
+     * notified to the CompletionStage. Only in case of fast non-blocking
+     * processing, it is allowed to, instead, return the outcome
+     * (either null or an exception) directly.
+     * <BR>Even if the processing is asynchronous,
+     * the outcome should be provided as soon as possible.
+     * In fact, a slow implementation may cause the processing of other
+     * messages of the same sequence to be delayed.
+     * <BR>The number of asynchronous invocations still pending can be
+     * limited through the configuration of the dedicated "MSG"
+     * thread pool, automatically created for this Adapter Set.
      *
      * @param user A User name.
      * @param  sessionID  The ID of a Session owned by the User.
      * @param  message  A non-null string. 
+     * @return a CompletionStage that will be notified of the outcome (either
+     * successful or exceptional).
+     * <BR>Only if a successful outcome is determined immediately, it is
+     * possible to rather just return null.
      * @throws CreditsException if the User is not enabled to send the
      * message or the message cannot be correctly managed.
+     * <BR>The exception can be thrown directly only if the case is detected
+     * immediately; otherwise a CompletionStage should be returned and the
+     * exception notified to it.
      * @throws NotificationException if something is wrong in the parameters,
      * such as a nonexistent Session ID.
+     * <BR>The exception can be thrown directly only if the case is detected
+     * immediately; otherwise a CompletionStage should be returned and the
+     * exception notified to it.
      */
     public CompletionStage<Void> notifyUserMessage(@Nullable String user, @Nonnull String sessionID, @Nonnull String message)
         throws CreditsException, NotificationException;

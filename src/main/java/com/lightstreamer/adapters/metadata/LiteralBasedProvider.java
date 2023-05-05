@@ -495,16 +495,19 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * Providers.
      * Note that, for authentication purposes, only the user and password
      * arguments should be consulted.
-     * <BR>The check is deferred to a reduced version of the method,
-     * where the httpHeader argument is discarded. This also ensures
-     * backward compatibility with very old adapter classes derived from this one.
+     * <BR>In this very simple implementation, a configured set of user names
+     * is checked and no password check is done.
+     * Even though the processing is immediate, we return a CompletionStage
+     * for demonstration purpose.
      *
      * @param user A User name.
      * @param password An optional password.
      * @param httpHeaders A Map that contains a name-value pair for each
      * header found in the HTTP request that originated the call. Not used.
-     * @throws AccessException if a list of User names has been configured
+     * @return a CompletionStage, that may also be completed exceptionally
+     * with an AccessException if a list of User names has been configured
      * and the supplied name does not belong to the list.
+     * @throws AccessException never thrown
      * @throws CreditsException never thrown.
      * 
      * @see #notifyUser(String, String, Map, String)
@@ -546,9 +549,9 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * TLS/SSL certificate supplied on the socket connection used to issue the
      * request that originated the call; it can be null if client has not
      * authenticated itself or the authentication has failed. Not used.
-     * @throws AccessException if a list of User names has been configured
-     * and the supplied name does not belong to the list.
-     * @throws CreditsException never thrown.
+     * @return a CompletionStage or null, demanded to the 3-arguments overload.
+     * @throws AccessException, demanded to the 3-arguments overload.
+     * @throws CreditsException, demanded to the 3-arguments overload.
      */
     @Override
     public CompletionStage<Void> notifyUser(String user, String password, Map httpHeaders,  String clientPrincipal)
