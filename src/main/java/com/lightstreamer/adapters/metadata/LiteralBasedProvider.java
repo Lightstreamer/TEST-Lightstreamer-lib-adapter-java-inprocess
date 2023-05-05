@@ -371,11 +371,11 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * backward compatibility with old adapter classes derived from this one.
      *
      * @param user A User name.
-     * @param sessionID A Session ID. Not used.
+     * @param sessionID A Session ID.
      * @param itemList An Item List specification.
      * @param dataAdapter The name of the Data Adapter to which the Item List is targeted.
-     * @return An array with the names of the Items in the List.
-     * @throws ItemsException never thrown
+     * @return An array with the names of the Items in the List, demanded to the 3-arguments overload.
+     * @throws ItemsException, demanded to the 3-arguments overload.
      */
     public String[] getItems(String user, String sessionID, String itemList, String dataAdapter) throws ItemsException {
         return getItems(user, sessionID, itemList);
@@ -388,10 +388,10 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * backward compatibility with very old adapter classes derived from this one.
      *
      * @param user A User name.
-     * @param sessionID A Session ID. Not used.
+     * @param sessionID A Session ID.
      * @param itemList An Item List specification.
-     * @return An array with the names of the Items in the List.
-     * @throws ItemsException never thrown
+     * @return An array with the names of the Items in the List, demanded to the 2-arguments overload.
+     * @throws ItemsException, demanded to the 2-arguments overload.
      * 
      * @see #getItems(String, String, String, String)
      */
@@ -421,13 +421,13 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * backward compatibility with old adapter classes derived from this one.
      *
      * @param user A User name.
-     * @param sessionID A Session ID. Not used.
+     * @param sessionID A Session ID.
      * @param itemList The specification of the Item List whose Items the Field List
      * is to be applied to.
      * @param dataAdapter The name of the Data Adapter to which the Item List is targeted.
      * @param fieldList A Field List specification.
-     * @return An array with the names of the Fields in the List.
-     * @throws SchemaException never thrown
+     * @return An array with the names of the Fields in the List, demanded to the 4-arguments overload.
+     * @throws SchemaException, demanded to the 4-arguments overload.
      */
     public String[] getSchema(String user, String sessionID, String itemList, String dataAdapter, String fieldList)
             throws SchemaException {
@@ -441,12 +441,12 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * backward compatibility with very old adapter classes derived from this one.
      *
      * @param user A User name.
-     * @param sessionID A Session ID. Not used.
+     * @param sessionID A Session ID.
      * @param itemList The specification of the Item List whose Items the Field List
      * is to be applied to.
      * @param fieldList A Field List specification.
-     * @return An array with the names of the Fields in the List.
-     * @throws SchemaException never thrown
+     * @return An array with the names of the Fields in the List, demanded to the 3-arguments overload.
+     * @throws SchemaException, demanded to the 3-arguments overload.
      * 
      * @see #getSchema(String, String, String, String, String)
      */
@@ -578,11 +578,10 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * where the dataAdapter argument is discarded. This also ensures
      * backward compatibility with old adapter classes derived from this one.
      *
-     * @param user A User name. Not used.
-     * @param item An Item Name. Not used.
-     * @param dataAdapter A Data Adapter name. Not used.
-     * @return The allowed Update frequency, in Updates/sec, as supplied
-     * in the Metadata Adapter configuration.
+     * @param user A User name.
+     * @param item An Item Name.
+     * @param dataAdapter A Data Adapter name.
+     * @return A frequency limit, demanded to the 2-arguments overload.
      */
     @Override
     public double getAllowedMaxItemFrequency(String user, String item, String dataAdapter) {
@@ -612,11 +611,10 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * where the dataAdapter argument is discarded. This also ensures
      * backward compatibility with old adapter classes derived from this one.
      *
-     * @param user A User name. Not used.
-     * @param item An Item Name. Not used.
-     * @param dataAdapter A Data Adapter name. Not used.
-     * @return The allowed buffer size, as supplied in the Metadata Adapter
-     * configuration.
+     * @param user A User name.
+     * @param item An Item Name.
+     * @param dataAdapter A Data Adapter name.
+     * @return A buffer size, demanded to the 2-arguments overload.
      */
     @Override
     public int getAllowedBufferSize(String user, String item, String dataAdapter) {
@@ -649,10 +647,9 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * where the dataAdapter argument is discarded. This also ensures
      * backward compatibility with old adapter classes derived from this one.
      * 
-     * @param item An Item Name. Not used.
-     * @param dataAdapter A Data Adapter name. Not used.
-     * @return The maximum frequency to be allowed by the prefilter,
-     * as supplied in the Metadata Adapter configuration.
+     * @param item An Item Name.
+     * @param dataAdapter A Data Adapter name.
+     * @return A frequency limit, demanded to the 1-arguments overload.
      */
     @Override
     public double getMinSourceFrequency(String item, String dataAdapter) {
@@ -681,12 +678,9 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * where the dataAdapter argument is discarded. This also ensures
      * backward compatibility with old adapter classes derived from this one.
      *
-     * @param item An Item Name. Not used.
-     * @param dataAdapter A Data Adapter name. Not used.
-     * @return The maximum allowed length for the Snapshot, as supplied
-     * in the Metadata Adapter configuration. In case no value has been
-     * supplied, a default value of 10 events is returned, which is thought
-     * to be enough to satisfy typical Client requests.
+     * @param item An Item Name.
+     * @param dataAdapter A Data Adapter name.
+     * @return A snapshot length, demanded to the 1-arguments overload.
      */
     @Override
     public int getDistinctSnapshotLength(String item, String dataAdapter) {

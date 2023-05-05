@@ -131,10 +131,10 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * This also ensures backward compatibility with old adapter classes
      * derived from this one.
      *
-     * @param  user  not used.
-     * @param  item  not used.
-     * @param  dataAdapter  not used.
-     * @return always zero, to mean no frequency limit.
+     * @param  user  a user name.
+     * @param  item  an item name.
+     * @param  dataAdapter  a Data Adapter name.
+     * @return a frequency limit, demanded to the 2-arguments overload.
      */
     public double getAllowedMaxItemFrequency(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter) {
         return getAllowedMaxItemFrequency(user, item);
@@ -168,10 +168,10 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * This also ensures backward compatibility with old adapter classes
      * derived from this one.
      *
-     * @param  user  not used.
-     * @param  item  not used.
-     * @param  dataAdapter  not used.
-     * @return always zero, to mean no size limit.
+     * @param  user  a user name.
+     * @param  item  an item name.
+     * @param  dataAdapter  a Data Adapter name.
+     * @return a buffer size, demanded to the 2-arguments overload.
      */
     public int getAllowedBufferSize(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter) {
         return getAllowedBufferSize(user, item);
@@ -204,11 +204,11 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * This also ensures backward compatibility with old adapter classes
      * derived from this one.
      *
-     * @param  user  not used.
-     * @param  item  not used.
-     * @param  dataAdapter  not used.
-     * @param  mode  not used.
-     * @return always true.
+     * @param  user  a user name.
+     * @param  item  an item name.
+     * @param  dataAdapter  a Data Adapter name.
+     * @param  mode  a subscription mode.
+     * @return true or false, demanded to the 3-arguments overload.
      */
     public boolean isModeAllowed(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter, @Nonnull Mode mode) {
         return isModeAllowed(user, item, mode);
@@ -243,10 +243,10 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * This also ensures backward compatibility with old adapter classes
      * derived from this one.
      *
-     * @param  item  not used.
-     * @param  dataAdapter  not used.
-     * @param  mode  not used.
-     * @return always true.
+     * @param  item  an item name.
+     * @param  dataAdapter  a Data Adapter name.
+     * @param  mode  a subscription mode.
+     * @return true or false, demanded to the 2-arguments overload.
      */
     public boolean modeMayBeAllowed(@Nonnull String item, @Nonnull String dataAdapter, @Nonnull Mode mode) {
         return modeMayBeAllowed(item, mode);
@@ -285,11 +285,11 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * This also ensures backward compatibility with old adapter classes
      * derived from this one.
      *
-     * @param user not used.
-     * @param item not used.
-     * @param dataAdapter not used.
-     * @param selector not used.
-     * @return always true, to mean that the Selector is allowed.
+     * @param  user  a user name.
+     * @param  item  an item name.
+     * @param  dataAdapter  a Data Adapter name.
+     * @param  selector  a selector name.
+     * @return true or false, demanded to the 3-arguments overload.
      */
     public boolean isSelectorAllowed(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter, @Nonnull String selector) {
         return isSelectorAllowed(user, item, selector);
@@ -323,13 +323,12 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * This also ensures backward compatibility with old adapter classes
      * derived from this one.
      *
-     * @param user not used.
-     * @param item not used.
-     * @param dataAdapter not used.
-     * @param selector not used.
-     * @param event not used.
-     * @return always true, to mean that the event is to be processed
-     * by the ItemEventBuffer.
+     * @param  user  a user name.
+     * @param  item  an item name.
+     * @param  dataAdapter  a Data Adapter name.
+     * @param  selector  a selector name.
+     * @param  event  an update event.
+     * @return true or false, demanded to the 4-arguments overload.
      */
     public boolean isSelected(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter, @Nonnull String selector, @Nonnull ItemEvent event) {
         return isSelected(user, item, selector, event);
@@ -364,11 +363,10 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * This also ensures backward compatibility with old adapter classes
      * derived from this one.
      *
-     * @param user not used.
-     * @param item not used.
-     * @param dataAdapter not used.
-     * @return always false, to mean that the Kernel should never ask for
-     * update values modifications.
+     * @param  user  a user name.
+     * @param  item  an item name.
+     * @param  dataAdapter  a Data Adapter name.
+     * @return true or false, demanded to the 2-arguments overload.
      */
     public boolean enableUpdateCustomization(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter) {
         return enableUpdateCustomization(user, item);
@@ -400,10 +398,10 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * This also ensures backward compatibility with old adapter classes
      * derived from this one.
      *
-     * @param user not used.
-     * @param item not used.
-     * @param dataAdapter not used.
-     * @param event not used.
+     * @param  user  a user name.
+     * @param  item  an item name.
+     * @param  dataAdapter  a Data Adapter name.
+     * @param  event  an update event.
      */
     public void customizeUpdate(@Nullable String user, @Nonnull String item, @Nonnull String dataAdapter, @Nonnull CustomizableItemEvent event) {
         customizeUpdate(user, item, event);
@@ -439,10 +437,9 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * This also ensures backward compatibility with old adapter classes
      * derived from this one.
      *
-     * @param  item  not used.
-     * @param  dataAdapter  not used.
-     * @return always zero, to mean that incoming ItemEvents must not be
-     * prefiltered.
+     * @param  item  an item name.
+     * @param  dataAdapter  a Data Adapter name.
+     * @return a frequency limit, demanded to the 1-arguments overload.
      */
     public double getMinSourceFrequency(@Nonnull String item, @Nonnull String dataAdapter) {
         return getMinSourceFrequency(item);
@@ -476,10 +473,9 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * This also ensures backward compatibility with old adapter classes
      * derived from this one.
      *
-     * @param item  not used.
-     * @param dataAdapter  not used.
-     * @return a value of 0, to mean that no events will be kept in order to
-     * satisfy snapshot requests.
+     * @param  item  an item name.
+     * @param  dataAdapter  a Data Adapter name.
+     * @return a snapshot length, demanded to the 1-arguments overload.
      */
     public int getDistinctSnapshotLength(@Nonnull String item, @Nonnull String dataAdapter) {
         return getDistinctSnapshotLength(item);
@@ -531,9 +527,9 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      *
      * @param user A User name.
      * @param sessionID The ID of a new Session.
-     * @param clientContext not used.
-     * @throws CreditsException never thrown
-     * @throws NotificationException never thrown
+     * @param clientContext a Map of key-value pairs with client context information.
+     * @throws CreditsException, demanded to the 2-arguments overload.
+     * @throws NotificationException, demanded to the 2-arguments overload.
      */
     public void notifyNewSession(@Nullable String user, @Nonnull String sessionID,  @Nonnull Map clientContext)
             throws CreditsException, NotificationException {
