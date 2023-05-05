@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -511,10 +512,15 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
     @Override
     public CompletionStage<Void> notifyUser(String user, String password, Map httpHeaders)
             throws AccessException, CreditsException {
+        CompletableFuture<Void> outcome = new CompletableFuture<Void>();
+        // very simple non-blocking implementation;
+        // we don't need to implement it asynchronously
         if (!checkUser(user)) {
-            throw new AccessException("Unauthorized user");
+            outcome.completeExceptionally(new AccessException("Unauthorized user"));
+        } else {
+            outcome.complete(null);
         }
-        return null;
+        return outcome;
     }
 
     /**
