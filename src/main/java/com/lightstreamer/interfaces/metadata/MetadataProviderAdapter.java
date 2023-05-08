@@ -102,8 +102,8 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * request that originated the call; it can be null if client has not
      * authenticated itself or the authentication has failed. Not used.
      * @return a CompletionStage or null, demanded to the 3-arguments overload.
-     * @throws AccessException, demanded to the 3-arguments overload.
-     * @throws CreditsException, demanded to the 3-arguments overload.
+     * @throws AccessException demanded to the 3-arguments overload.
+     * @throws CreditsException demanded to the 3-arguments overload.
      */
     public CompletionStage<Void> notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders,  @Nonnull String clientPrincipal)
             throws AccessException, CreditsException {
@@ -528,8 +528,8 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * @param user A User name.
      * @param sessionID The ID of a new Session.
      * @param clientContext a Map of key-value pairs with client context information.
-     * @throws CreditsException, demanded to the 2-arguments overload.
-     * @throws NotificationException, demanded to the 2-arguments overload.
+     * @throws CreditsException demanded to the 2-arguments overload.
+     * @throws NotificationException demanded to the 2-arguments overload.
      */
     public void notifyNewSession(@Nullable String user, @Nonnull String sessionID,  @Nonnull Map clientContext)
             throws CreditsException, NotificationException {

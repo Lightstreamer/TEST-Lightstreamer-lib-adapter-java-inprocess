@@ -375,7 +375,7 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * @param itemList An Item List specification.
      * @param dataAdapter The name of the Data Adapter to which the Item List is targeted.
      * @return An array with the names of the Items in the List, demanded to the 3-arguments overload.
-     * @throws ItemsException, demanded to the 3-arguments overload.
+     * @throws ItemsException demanded to the 3-arguments overload.
      */
     public String[] getItems(String user, String sessionID, String itemList, String dataAdapter) throws ItemsException {
         return getItems(user, sessionID, itemList);
@@ -391,7 +391,7 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * @param sessionID A Session ID.
      * @param itemList An Item List specification.
      * @return An array with the names of the Items in the List, demanded to the 2-arguments overload.
-     * @throws ItemsException, demanded to the 2-arguments overload.
+     * @throws ItemsException demanded to the 2-arguments overload.
      * 
      * @see #getItems(String, String, String, String)
      */
@@ -427,7 +427,7 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * @param dataAdapter The name of the Data Adapter to which the Item List is targeted.
      * @param fieldList A Field List specification.
      * @return An array with the names of the Fields in the List, demanded to the 4-arguments overload.
-     * @throws SchemaException, demanded to the 4-arguments overload.
+     * @throws SchemaException demanded to the 4-arguments overload.
      */
     public String[] getSchema(String user, String sessionID, String itemList, String dataAdapter, String fieldList)
             throws SchemaException {
@@ -446,7 +446,7 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * is to be applied to.
      * @param fieldList A Field List specification.
      * @return An array with the names of the Fields in the List, demanded to the 3-arguments overload.
-     * @throws SchemaException, demanded to the 3-arguments overload.
+     * @throws SchemaException demanded to the 3-arguments overload.
      * 
      * @see #getSchema(String, String, String, String, String)
      */
@@ -550,8 +550,8 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * request that originated the call; it can be null if client has not
      * authenticated itself or the authentication has failed. Not used.
      * @return a CompletionStage or null, demanded to the 3-arguments overload.
-     * @throws AccessException, demanded to the 3-arguments overload.
-     * @throws CreditsException, demanded to the 3-arguments overload.
+     * @throws AccessException demanded to the 3-arguments overload.
+     * @throws CreditsException demanded to the 3-arguments overload.
      */
     @Override
     public CompletionStage<Void> notifyUser(String user, String password, Map httpHeaders,  String clientPrincipal)
