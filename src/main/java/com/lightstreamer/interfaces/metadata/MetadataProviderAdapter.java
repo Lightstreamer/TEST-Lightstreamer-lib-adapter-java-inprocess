@@ -512,7 +512,7 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * @throws CreditsException  always thrown.
      * @throws NotificationException  never thrown.
      */
-    public CompletionStage<Void> notifyUserMessage(@Nullable String user, @Nonnull String sessionID, @Nonnull String message)
+    public CompletionStage<String> notifyUserMessage(@Nullable String user, @Nonnull String sessionID, @Nonnull String message)
             throws CreditsException, NotificationException {
         throw new CreditsException(0, "Unsupported function");
     }

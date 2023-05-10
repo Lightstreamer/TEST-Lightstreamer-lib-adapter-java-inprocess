@@ -634,13 +634,15 @@ public interface MetadataProvider {
     /**
      * Called by Lightstreamer Kernel to forward a message received by a User.
      * The interpretation of the message is up to the Metadata Adapter.
+     * The Adapter can answer with a response message to be sent back to the
+     * client. If no response message is needed, a null value can be sent.
      * A message can also be refused.
      * <BR>
      * <BR>The method should perform fast and just return a CompletionStage.
      * The real implementation should be done asynchronously and the outcome
      * notified to the CompletionStage. Only in case of fast non-blocking
-     * processing, it is allowed to, instead, return the outcome
-     * (either null or an exception) directly.
+     * processing and no response message needed, it is allowed to, instead,
+     * return the outcome (either null or an exception) directly.
      * <BR>Even if the processing is asynchronous,
      * the outcome should be provided as soon as possible.
      * In fact, a slow implementation may cause the processing of other
@@ -652,10 +654,11 @@ public interface MetadataProvider {
      * @param user A User name.
      * @param  sessionID  The ID of a Session owned by the User.
      * @param  message  A non-null string. 
-     * @return a CompletionStage that will be notified of the outcome (either
-     * successful or exceptional).
-     * <BR>Only if a successful outcome is determined immediately, it is
-     * possible to rather just return null.
+     * @return a CompletionStage that will be notified of the outcome.
+     * The outcome can be either successful (with a response message,
+     * or null if not needed) or exceptional.
+     * <BR>Only if a successful outcome is determined immediately and no
+     * response message is needed, it is possible to rather just return null.
      * @throws CreditsException if the User is not enabled to send the
      * message or the message cannot be correctly managed.
      * <BR>The exception can be thrown directly only if the case is detected
@@ -667,7 +670,7 @@ public interface MetadataProvider {
      * immediately; otherwise a CompletionStage should be returned and the
      * exception notified to it.
      */
-    public CompletionStage<Void> notifyUserMessage(@Nullable String user, @Nonnull String sessionID, @Nonnull String message)
+    public CompletionStage<String> notifyUserMessage(@Nullable String user, @Nonnull String sessionID, @Nonnull String message)
         throws CreditsException, NotificationException;
     // Pertaining to MSG pool.
 

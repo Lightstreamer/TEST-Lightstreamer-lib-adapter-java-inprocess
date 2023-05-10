@@ -6,7 +6,7 @@
 *Compatible with Lightstreamer Server since 7.4.*
 *May not be compatible with code developed with the previous version; see compatibility notes below.*
 
-**Improvements**
+**New Features**
 
 - Moved to an asynchronous interface for the most critical callbacks, that is, the two overloads of notifyUser and notifyUserMessage in the MetadataProvider interface.
 This was done by actually modifying the signatures of these methods, which now return a CompletionStage.
@@ -14,6 +14,13 @@ The possibility for the implementations to operate inline and return directly (e
 **COMPATIBILITY NOTE:** *Adapter source code implementing the affected callbacks has to be ported. Only in case of fast non-blocking execution, the addition of a return of null is enough. Otherwise, the processing should be rewritten to perform asynchronously and a CompletionStage, to which the successful or exceptional termination will be notified, should be immediately returned.*<br/>
 *Only Adapter source code inheriting from LiteralBasedProvider or MetadataProviderAdapter which doesn't override any of the affected callbacks can be left unchanged.*<br/>
 **COMPATIBILITY NOTE:** *Existing Adapter binaries built with the previous library version are still supported by the Server, but for a corner case: If an Adapter inherits from LiteralBasedProvider or MetadataProviderAdapter and invokes the no-op "super" implementation of any of the affected callbacks, it will incur in a runtime error. In this case, the Adapter should be ported and rebuilt (or you may contact Lightstreamer support for alternative workarounds).*
+
+- Introduced the possibility for the notifyUserMessage callback to provide a response message, through the new CompletionStage return value.
+**COMPATIBILITY NOTE:** *Adapter source code implementing notifyUserMessage, after being ported to comply with the new return type, doesn't need further changes. A null response, in fact, is always allowed.*<br/>
+*Adapter source code inheriting from LiteralBasedProvider or MetadataProviderAdapter which doesn't override notifyUserMessage can be left unchanged.*<br/>
+**COMPATIBILITY NOTE:** *Existing Adapter binaries built with the previous library version are still supported by the Server and meant to provide a null response, when successful.*
+
+**Improvements**
 
 - Removed from LiteralBasedProvider and MetadataProviderAdapter the 2-arguments overload of notifyUser, which was introduced to handle backward compatibility with very old Metadata Adapters.<br/>
 **COMPATIBILITY NOTE:** *Adapter source code inheriting from LiteralBasedProvider or MetadataProviderAdapter which overrides only the 2-arguments overload should override the 3-arguments overload instead.*<br/>
