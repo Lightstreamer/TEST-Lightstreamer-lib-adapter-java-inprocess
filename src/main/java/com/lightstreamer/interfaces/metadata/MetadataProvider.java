@@ -659,6 +659,8 @@ public interface MetadataProvider {
      * or null if not needed) or exceptional.
      * <BR>Only if a successful outcome is determined immediately and no
      * response message is needed, it is possible to rather just return null.
+     * <BR>Note: in both cases, a null value will be sent to the client
+     * as an empty string response message.
      * @throws CreditsException if the User is not enabled to send the
      * message or the message cannot be correctly managed.
      * <BR>The exception can be thrown directly only if the case is detected
