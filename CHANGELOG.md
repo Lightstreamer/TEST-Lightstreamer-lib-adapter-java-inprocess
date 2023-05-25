@@ -26,6 +26,9 @@ The possibility for the implementations to operate inline and return directly (e
 **COMPATIBILITY NOTE:** *Adapter source code inheriting from LiteralBasedProvider or MetadataProviderAdapter which overrides only the 2-arguments overload should override the 3-arguments overload instead.*<br/>
 **COMPATIBILITY NOTE:** *Existing Adapter binaries built with the previous library version are still supported by the Server, but for a corner case: If an Adapter inherits from LiteralBasedProvider or MetadataProviderAdapter and invokes the no-op "super" implementation of the 2-arguments overload of notifyUser, it will incur in a runtime error. In this case, the Adapter should be ported and rebuilt (or you may contact Lightstreamer support for alternative workarounds).*
 
+- Clarified the meaning of a null value for a "userMsg" argument supplied in a CreditsException: an empty string should be sent to the client.
+**COMPATIBILITY NOTE:** *Previously, the Server used to send the "null" string as a placeholder. Adapters relying on this behavior should now supply "null" explicitly.*<br/>
+
 
 ## [7.4.1] (18-11-2022)
 

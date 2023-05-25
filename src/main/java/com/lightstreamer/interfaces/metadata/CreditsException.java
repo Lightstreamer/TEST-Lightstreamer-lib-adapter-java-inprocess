@@ -40,7 +40,8 @@ public class CreditsException extends Exception {
      * unspecified problem.
      * @param msg The detail message.
      * @param userMsg A detail message to be forwarded to the Client. It can
-     * be null. The message should be in simple ASCII, otherwise it might be
+     * be null, in which case an empty string message will be assumed.
+     * The message should be in simple ASCII, otherwise it might be
      * altered in order to be sent to the client; multiline text is also 
      * not allowed.
      */
