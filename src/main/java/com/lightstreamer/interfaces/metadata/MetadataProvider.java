@@ -17,7 +17,7 @@ package com.lightstreamer.interfaces.metadata;
 
 import java.io.File;
 import java.util.Map;
-import java.util.concurrent.CompletionStage;
+import java.util.concurrent.CompletableFuture;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -126,9 +126,9 @@ public interface MetadataProvider {
      * discussion about the &lt;use_protected_js&gt; Server configuration
      * element, if available.
      * <BR>
-     * <BR>The method should perform fast and just return a CompletionStage.
+     * <BR>The method should perform fast and just return a CompletableFuture.
      * The real implementation should be done asynchronously and the outcome
-     * notified to the CompletionStage. Only in case of fast non-blocking
+     * notified to the CompletableFuture. Only in case of fast non-blocking
      * processing, it is allowed to, instead, return the outcome
      * (either null or an exception) directly.
      * <BR>Even if the processing is asynchronous,
@@ -149,7 +149,7 @@ public interface MetadataProvider {
      * For headers defined multiple times, a unique name-value pair is reported,
      * where the value is a concatenation of all the supplied header values,
      * separated by a ",".
-     * @return a CompletionStage that will be notified of the outcome (either
+     * @return a CompletableFuture that will be notified of the outcome (either
      * successful or exceptional).
      * <BR>Only if a successful outcome is determined immediately, it is
      * possible to rather just return null.
@@ -159,17 +159,17 @@ public interface MetadataProvider {
      * lack of resources, then a {@link ResourceUnavailableException} can be
      * thrown. This will instruct the client to retry in short time.
      * <BR>The exception can be thrown directly only if the case is detected
-     * immediately; otherwise a CompletionStage should be returned and the
+     * immediately; otherwise a CompletableFuture should be returned and the
      * exception notified to it.
      * @throws CreditsException if the User is known but is not enabled to
      * make further Requests at the moment.
      * <BR>The exception can be thrown directly only if the case is detected
-     * immediately; otherwise a CompletionStage should be returned and the
+     * immediately; otherwise a CompletableFuture should be returned and the
      * exception notified to it.
      * 
      * @see #notifyUser(String, String, Map, String)
      */
-    public CompletionStage<Void> notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders)
+    public CompletableFuture<Void> notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders)
         throws AccessException, CreditsException;
     // Pertaining to AUTHENTICATION pool.
 
@@ -202,7 +202,7 @@ public interface MetadataProvider {
      * TLS/SSL certificate supplied on the socket connection used to issue the
      * request that originated the call; it can be null if client has not
      * authenticated itself or the authentication has failed.
-     * @return a CompletionStage that will be notified of the outcome (either
+     * @return a CompletableFuture that will be notified of the outcome (either
      * successful or exceptional).
      * <BR>Only if a successful outcome is determined immediately, it is
      * possible to rather just return null.
@@ -212,15 +212,15 @@ public interface MetadataProvider {
      * lack of resources, then a {@link ResourceUnavailableException} can be
      * thrown. This will instruct the client to retry in short time.
      * <BR>The exception can be thrown directly only if the case is detected
-     * immediately; otherwise a CompletionStage should be returned and the
+     * immediately; otherwise a CompletableFuture should be returned and the
      * exception notified to it.
      * @throws CreditsException if the User is known but is not enabled to
      * make further Requests at the moment.
      * <BR>The exception can be thrown directly only if the case is detected
-     * immediately; otherwise a CompletionStage should be returned and the
+     * immediately; otherwise a CompletableFuture should be returned and the
      * exception notified to it.
      */
-    public CompletionStage<Void> notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders,  @Nonnull String clientPrincipal)
+    public CompletableFuture<Void> notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders,  @Nonnull String clientPrincipal)
         throws AccessException, CreditsException;
     // Pertaining to AUTHENTICATION pool.
 
@@ -638,9 +638,9 @@ public interface MetadataProvider {
      * client. If no response message is needed, a null value can be sent.
      * A message can also be refused.
      * <BR>
-     * <BR>The method should perform fast and just return a CompletionStage.
+     * <BR>The method should perform fast and just return a CompletableFuture.
      * The real implementation should be done asynchronously and the outcome
-     * notified to the CompletionStage. Only in case of fast non-blocking
+     * notified to the CompletableFuture. Only in case of fast non-blocking
      * processing and no response message needed, it is allowed to, instead,
      * return the outcome (either null or an exception) directly.
      * <BR>Even if the processing is asynchronous,
@@ -654,7 +654,7 @@ public interface MetadataProvider {
      * @param user A User name.
      * @param  sessionID  The ID of a Session owned by the User.
      * @param  message  A non-null string. 
-     * @return a CompletionStage that will be notified of the outcome.
+     * @return a CompletableFuture that will be notified of the outcome.
      * The outcome can be either successful (with a response message,
      * or null if not needed) or exceptional.
      * <BR>Only if a successful outcome is determined immediately and no
@@ -664,15 +664,15 @@ public interface MetadataProvider {
      * @throws CreditsException if the User is not enabled to send the
      * message or the message cannot be correctly managed.
      * <BR>The exception can be thrown directly only if the case is detected
-     * immediately; otherwise a CompletionStage should be returned and the
+     * immediately; otherwise a CompletableFuture should be returned and the
      * exception notified to it.
      * @throws NotificationException if something is wrong in the parameters,
      * such as a nonexistent Session ID.
      * <BR>The exception can be thrown directly only if the case is detected
-     * immediately; otherwise a CompletionStage should be returned and the
+     * immediately; otherwise a CompletableFuture should be returned and the
      * exception notified to it.
      */
-    public CompletionStage<String> notifyUserMessage(@Nullable String user, @Nonnull String sessionID, @Nonnull String message)
+    public CompletableFuture<String> notifyUserMessage(@Nullable String user, @Nonnull String sessionID, @Nonnull String message)
         throws CreditsException, NotificationException;
     // Pertaining to MSG pool.
 

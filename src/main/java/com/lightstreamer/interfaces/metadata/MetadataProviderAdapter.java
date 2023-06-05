@@ -17,7 +17,7 @@ package com.lightstreamer.interfaces.metadata;
 
 import java.io.File;
 import java.util.Map;
-import java.util.concurrent.CompletionStage;
+import java.util.concurrent.CompletableFuture;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -60,7 +60,7 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * arguments should be consulted.
      * <BR>In this default implementation, the Metadata Adapter poses no
      * restriction. As the processing is successful and immediate,
-     * we don't need to return a CompletionStage, but can just return null. 
+     * we don't need to return a CompletableFuture, but can just return null. 
      *
      * @param user A User name.
      * @param password A password optionally required to validate the User.
@@ -73,7 +73,7 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * 
      * @see #notifyUser(String, String, Map, String)
      */
-    public CompletionStage<Void> notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders)
+    public CompletableFuture<Void> notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders)
             throws AccessException, CreditsException {
         return null;
     }
@@ -101,11 +101,11 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * TLS/SSL certificate supplied on the socket connection used to issue the
      * request that originated the call; it can be null if client has not
      * authenticated itself or the authentication has failed. Not used.
-     * @return a CompletionStage or null, demanded to the 3-arguments overload.
+     * @return a CompletableFuture or null, demanded to the 3-arguments overload.
      * @throws AccessException demanded to the 3-arguments overload.
      * @throws CreditsException demanded to the 3-arguments overload.
      */
-    public CompletionStage<Void> notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders,  @Nonnull String clientPrincipal)
+    public CompletableFuture<Void> notifyUser(@Nullable String user, @Nullable String password, @Nonnull Map httpHeaders,  @Nonnull String clientPrincipal)
             throws AccessException, CreditsException {
         return notifyUser(user, password, httpHeaders);
     }
@@ -503,7 +503,7 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * Called by Lightstreamer Kernel to forward a message received by a User.
      * In this default implementation, the Metadata Adapter does never
      * accept the message. As the processing is immediate, we don't need
-     * to return a CompletionStage, but can just throw an exception.
+     * to return a CompletableFuture, but can just throw an exception.
      *
      * @param  user  not used.
      * @param  sessionID  not used.
@@ -512,7 +512,7 @@ public abstract class MetadataProviderAdapter implements MetadataProvider {
      * @throws CreditsException  always thrown.
      * @throws NotificationException  never thrown.
      */
-    public CompletionStage<String> notifyUserMessage(@Nullable String user, @Nonnull String sessionID, @Nonnull String message)
+    public CompletableFuture<String> notifyUserMessage(@Nullable String user, @Nonnull String sessionID, @Nonnull String message)
             throws CreditsException, NotificationException {
         throw new CreditsException(0, "Unsupported function");
     }

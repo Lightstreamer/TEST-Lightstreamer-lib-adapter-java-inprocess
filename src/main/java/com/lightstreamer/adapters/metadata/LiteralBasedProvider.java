@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.concurrent.CompletionStage;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -497,14 +496,14 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * arguments should be consulted.
      * <BR>In this very simple implementation, a configured set of user names
      * is checked and no password check is done.
-     * Even though the processing is immediate, we return a CompletionStage
+     * Even though the processing is immediate, we return a CompletableFuture
      * for demonstration purpose.
      *
      * @param user A User name.
      * @param password An optional password.
      * @param httpHeaders A Map that contains a name-value pair for each
      * header found in the HTTP request that originated the call. Not used.
-     * @return a CompletionStage, that may also be completed exceptionally
+     * @return a CompletableFuture, that may also be completed exceptionally
      * with an AccessException if a list of User names has been configured
      * and the supplied name does not belong to the list.
      * @throws AccessException never thrown
@@ -513,7 +512,7 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * @see #notifyUser(String, String, Map, String)
      */
     @Override
-    public CompletionStage<Void> notifyUser(String user, String password, Map httpHeaders)
+    public CompletableFuture<Void> notifyUser(String user, String password, Map httpHeaders)
             throws AccessException, CreditsException {
         CompletableFuture<Void> outcome = new CompletableFuture<Void>();
         // very simple non-blocking implementation;
@@ -549,12 +548,12 @@ public class LiteralBasedProvider extends MetadataProviderAdapter {
      * TLS/SSL certificate supplied on the socket connection used to issue the
      * request that originated the call; it can be null if client has not
      * authenticated itself or the authentication has failed. Not used.
-     * @return a CompletionStage or null, demanded to the 3-arguments overload.
+     * @return a CompletableFuture or null, demanded to the 3-arguments overload.
      * @throws AccessException demanded to the 3-arguments overload.
      * @throws CreditsException demanded to the 3-arguments overload.
      */
     @Override
-    public CompletionStage<Void> notifyUser(String user, String password, Map httpHeaders,  String clientPrincipal)
+    public CompletableFuture<Void> notifyUser(String user, String password, Map httpHeaders,  String clientPrincipal)
             throws AccessException, CreditsException {
         return notifyUser(user, password, httpHeaders);
     }
