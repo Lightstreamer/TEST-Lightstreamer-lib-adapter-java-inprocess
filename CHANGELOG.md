@@ -1,7 +1,7 @@
 # Lightstreamer Changelog - SDK for Java In-Process Adapters
 
 
-## [8.0.0] (xx-xx-xxxx)
+## [8.0.0] (03-07-2023)
 
 *Compatible with Lightstreamer Server since 7.4.*
 *May not be compatible with code developed with the previous version; see compatibility notes below.*
