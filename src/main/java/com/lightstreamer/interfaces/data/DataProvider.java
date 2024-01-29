@@ -82,7 +82,7 @@ public interface DataProvider {
      * <li>"adapters_conf.id" - the associated value is a string which reports
      * the name configured for the Adapter Set, i&#46;e&#46; the name specified for
      * the "id" attribute of the &lt;adapters_conf&gt; element;</li>
-     * <li>"data_adapter.name" - the associated value is a string which reports
+     * <li>"data_provider.name" - the associated value is a string which reports
      * the name configured for the Data Adapter, i&#46;e&#46; the name specified for
      * the "name" attribute of the &lt;data_providerf&gt; element (or its
      * default, which is "default").</li>

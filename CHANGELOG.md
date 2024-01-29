@@ -1,6 +1,16 @@
 # Lightstreamer Changelog - SDK for Java In-Process Adapters
 
 
+## [current state]
+
+*Compatible with Lightstreamer Server since 7.4.*
+*Compatible with code developed with the previous version.*
+
+**Bug Fixes**
+
+- Fixed the javadoc comment of DataProvider.init. The parameter supplied by the Kernel which reports the Data Adapter name as configured in adapters.xml is "data_provider.name", not "data_adapter.name".
+
+
 ## [8.0.0] (03-07-2023)
 
 *Compatible with Lightstreamer Server since 7.4.*
