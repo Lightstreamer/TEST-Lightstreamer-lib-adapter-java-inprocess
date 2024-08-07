@@ -77,7 +77,7 @@ public class MpnSubscriptionInfo {
      * 
      * @return a trigger expression, or null if not specified.
      */
-    @Nonnull
+    @Nullable
     public String getTrigger() {
         return _trigger;
     }

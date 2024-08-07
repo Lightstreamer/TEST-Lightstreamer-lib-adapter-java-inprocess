@@ -10,6 +10,8 @@
 
 - Fixed the javadoc comment of DataProvider.init. The parameter supplied by the Kernel which reports the Data Adapter name as configured in adapters.xml is "data_provider.name", not "data_adapter.name".
 
+- Fixed the note on getTrigger in the MpnSubscriptionInfo class, which can return null.
+
 
 ## [8.0.0] (03-07-2023)
 
